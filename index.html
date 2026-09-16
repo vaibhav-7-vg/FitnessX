@@ -1453,9 +1453,23 @@ input[type=number]{
 ===================================================== */
 
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
+  <div id="authScreen">
+<div class="auth-card">
+<div class="auth-logo">💪</div>
+<h1>FitSync</h1>
+<p>Track yourself. Improve together.</p>
+<div id="authMessage"></div>
+<input id="authEmail" type="email" placeholder="Email address">
+<input id="authPassword" type="password" placeholder="Password">
+<input id="authUsername" type="text" placeholder="Username" style="display:none">
+<button id="authMainBtn" onclick="handleAuth()">Create Account</button>
+<button class="secondary-btn" onclick="toggleAuthMode()" id="authToggleBtn">Already have an account? Sign In</button>
+</div>
+  </div>
 
 <div class="app">
 
@@ -2661,6 +2675,9 @@ input[type=number]{
      <script>
 ===================================================== -->
 <script>
+  const SUPABASE_URL="https://avfacqcbxzlirxbzqwiu.supabase.co";
+const SUPABASE_KEY="sb_publishable_BKi6yl58JUAJ0U-ccWn3QA_7eFlq8i4";
+const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
 const STORAGE_KEY="fitsync_data";
 let data={
