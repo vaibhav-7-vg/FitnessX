@@ -494,7 +494,21 @@ function updateWeeklyUI(){renderWeeklyResult();}
 function renderWeeklyResult(){const box=document.getElementById("weeklyResult");if(!box)return;const today=new Date();const day=today.getDay();if(day===0){const score=calculateScore();box.innerHTML=`<div class="card"><h3>🏆 Sunday Result</h3><div class="big-number">${score}/100</div><p>This week's current result is based on your nutrition, steps, exercise and sleep.</p><button onclick="showPage('homePage')">Back to Home</button></div>`;}else{box.innerHTML=`<div class="card"><h3>📅 Weekly Result</h3><p>Your weekly result will be shown on Sunday.</p><p>Keep tracking your food, steps, exercise and sleep every day.</p></div>`;}}
 function escapeHTML(str){if(!str)return"";return String(str).split("").map(char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]||char)).join("");}
 function toast(msg){const toastEl=document.getElementById("toast");if(!toastEl)return;toastEl.textContent=msg;toastEl.classList.add("show");setTimeout(()=>{toastEl.classList.remove("show");},2200);}
-function logout(){if(confirm("Logout from FitSync?")){localStorage.removeItem(STORAGE_KEY);window.location.reload();}}
+function logout(){
+  if(confirm("Logout from FitSync?")){
+    // Clear localStorage
+    localStorage.removeItem(STORAGE_KEY);
+    // Clear Supabase session
+    supabaseClient.auth.signOut().then(()=>{
+      // Force reload
+      window.location.reload();
+    }).catch((err)=>{
+      console.error("Logout error:",err);
+      // Force reload anyway
+      window.location.reload();
+    });
+  }
+}
 function showAuthMode(mode){authMode=mode;const loginTab=document.getElementById("loginTab");const signupTab=document.getElementById("signupTab");const signupFields=document.getElementById("signupFields");if(mode==="signup"){loginTab.classList.remove("active");signupTab.classList.add("active");signupFields.style.display="block";}else{loginTab.classList.add("active");signupTab.classList.remove("active");signupFields.style.display="none";}showAuthMessage("");}
 function toggleAuthMode(){showAuthMode(authMode==="login"?"signup":"login");}
 function showAuthMessage(message,error=false){const box=document.getElementById("authMessage");if(!box)return;box.textContent=message;box.style.color=error?"#ff6b6b":"#7CFF9B";}
