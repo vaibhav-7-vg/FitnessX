@@ -483,6 +483,7 @@ main{padding:14px}
 const SUPABASE_URL="https://bdduwgyyxtqvlzzfpwzs.supabase.co";
 const SUPABASE_KEY="sb_publishable_wtbNjoyb0xW9isu3oNRcaA_xF75j9fn";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  alert("JavaScript is running!");
   
 // DEBUG CODE START
 console.log("Supabase loaded:", typeof supabase);
@@ -1266,8 +1267,7 @@ window.__fitToast=setTimeout(()=>{
 toastEl.classList.remove("show");
 },2200);
 }
-
-  function renderWeeklyResult(){
+function renderWeeklyResult(){
 const box=document.getElementById("weeklyResult");
 if(!box)return;
 const today=new Date();
