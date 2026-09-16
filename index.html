@@ -483,6 +483,12 @@ main{padding:14px}
 const SUPABASE_URL="https://bdduwgyyxtqvlzzfpwzs.supabase.co";
 const SUPABASE_KEY="sb_publishable_wtbNjoyb0xW9isu3oNRcaA_xF75j9fn";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  
+// DEBUG CODE START
+console.log("Supabase loaded:", typeof supabase);
+console.log("Client ready:", !!supabaseClient);
+// DEBUG CODE END
+
 const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
 let authMode="login";
 let currentUser=null;
@@ -543,61 +549,82 @@ profileData=created;
 return created;
 }
 async function handleAuth(){
-const email=document.getElementById("authEmail").value.trim();
-const password=document.getElementById("authPassword").value;
-if(!email||!password){
-setAuthMessage("Please enter email and password.");
-return;
-}
-if(password.length<6){
-setAuthMessage("Password must be at least 6 characters.");
-return;
-}
-const button=document.getElementById("authActionBtn");
-button.disabled=true;
-button.style.opacity=".65";
-setAuthMessage(authMode==="login"?"Signing in...":"Creating account...");
-try{
-if(authMode==="signup"){
-const username=document.getElementById("signupUsername").value.trim();
-if(!username){
-setAuthMessage("Please enter a username.");
-button.disabled=false;
-button.style.opacity="1";
-return;
-}
-const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
-if(error)throw error;
-if(authData.session&&authData.user){
-currentUser=authData.user;
-await ensureProfile(currentUser,username);
-document.getElementById("authScreen").classList.add("hidden");
-await loadData();
-updateUI();
-setAuthMessage("");
-showToast("Account created successfully.");
-}else{
-setAuthMessage("Account created. Please sign in to continue.");
-showAuthMode("login");
-}
-}else{
-const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
-if(error)throw error;
-currentUser=authData.user;
-await ensureProfile(currentUser);
-document.getElementById("authScreen").classList.add("hidden");
-await loadData();
-updateUI();
-setAuthMessage("");
-showToast("Welcome back.");
-}
-}catch(error){
-console.error(error);
-setAuthMessage(error.message||"Authentication failed.");
-}finally{
-button.disabled=false;
-button.style.opacity="1";
-}
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const username=document.getElementById("authUsername")?.value.trim()||"";
+  
+  // Debug: Check if Supabase is loaded
+  if(typeof supabase === 'undefined'){
+    alert("ERROR: Supabase not loaded! Check internet connection.");
+    return;
+  }
+  
+  if(!email||!password){
+    setAuthMessage("Please enter email and password.");
+    alert("Missing email or password");
+    return;
+  }
+  if(authMode==="signup"&&!username){
+    setAuthMessage("Please enter a username.");
+    alert("Missing username");
+    return;
+  }
+  if(password.length<6){
+    setAuthMessage("Password must be at least 6 characters.");
+    alert("Password too short (min 6 characters)");
+    return;
+  }
+  
+  const mainBtn=document.getElementById("authMainBtn");
+  mainBtn.disabled=true;
+  setAuthMessage("Please wait...");
+  
+  try{
+    if(authMode==="signup"){
+      alert("Trying to sign up... Email: "+email);
+      const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
+      
+      if(error){
+        alert("Sign up ERROR: "+error.message);
+        throw error;
+      }
+      if(!authData.user){
+        alert("ERROR: Account could not be created");
+        throw new Error("Account could not be created.");
+      }
+      if(authData.session){
+        await ensureProfile(authData.user,username);
+        setAuthMessage("Account created successfully!");
+        alert("SUCCESS! Account created.");
+        await checkAuth();
+      }else{
+        setAuthMessage("Account created. Please sign in to continue.");
+        alert("Account created. Check your email to confirm.");
+      }
+    }else{
+      alert("Trying to sign in... Email: "+email);
+      const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      
+      if(error){
+        alert("Sign in ERROR: "+error.message);
+        throw error;
+      }
+      if(!authData.user){
+        alert("ERROR: Sign in failed");
+        throw new Error("Sign in failed.");
+      }
+      await ensureProfile(authData.user,username||"User");
+      setAuthMessage("Signed in successfully!");
+      alert("SUCCESS! Signed in.");
+      await checkAuth();
+    }
+  }catch(error){
+    console.error("FitSync authentication error:",error);
+    alert("CAUGHT ERROR: "+(error.message||"Unknown error"));
+    setAuthMessage(error.message||"Authentication failed.");
+  }finally{
+    mainBtn.disabled=false;
+  }
 }
 async function logout(){
 try{
