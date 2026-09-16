@@ -3139,6 +3139,81 @@ renderWeeklyResult();
 updateProgress();
 registerPWA();
 });
+     let authMode="signup";
+function toggleAuthMode(){
+authMode=authMode==="signup"?"login":"signup";
+const username=document.getElementById("authUsername");
+const mainBtn=document.getElementById("authMainBtn");
+const toggleBtn=document.getElementById("authToggleBtn");
+if(authMode==="signup"){
+username.style.display="block";
+mainBtn.textContent="Create Account";
+toggleBtn.textContent="Already have an account? Sign In";
+}else{
+username.style.display="none";
+mainBtn.textContent="Sign In";
+toggleBtn.textContent="Don't have an account? Create Account";
+}
+}
+function showAuthMessage(message,error=false){
+const box=document.getElementById("authMessage");
+box.textContent=message;
+box.style.color=error?"#ff6b6b":"#7CFF9B";
+}
+async function handleAuth(){
+const email=document.getElementById("authEmail").value.trim();
+const password=document.getElementById("authPassword").value;
+const username=document.getElementById("authUsername").value.trim();
+if(!email||!password){
+showAuthMessage("Please enter email and password.",true);
+return;
+}
+if(authMode==="signup"&&!username){
+showAuthMessage("Please enter a username.",true);
+return;
+}
+showAuthMessage("Please wait...");
+try{
+if(authMode==="signup"){
+const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
+if(error)throw error;
+if(authData.user){
+const friendCode="FS"+Math.random().toString(36).substring(2,8).toUpperCase();
+const {error:profileError}=await supabaseClient.from("profiles").insert({
+id:authData.user.id,
+username:username,
+friend_code:friendCode
+});
+if(profileError)throw profileError;
+}
+showAuthMessage("Account created successfully! Check your email if confirmation is required.");
+}else{
+const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+if(error)throw error;
+showAuthMessage("Signed in successfully!");
+}
+await checkAuth();
+}catch(error){
+console.error(error);
+showAuthMessage(error.message||"Authentication failed.",true);
+}
+}
+async function checkAuth(){
+const {data}=await supabaseClient.auth.getSession();
+if(data.session){
+document.getElementById("authScreen").style.display="none";
+}else{
+document.getElementById("authScreen").style.display="flex";
+}
+}
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+if(session){
+document.getElementById("authScreen").style.display="none";
+}else{
+document.getElementById("authScreen").style.display="flex";
+}
+});
+checkAuth();
 </script>
 </body>
 </html>
