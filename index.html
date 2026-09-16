@@ -125,12 +125,7 @@ main{padding:18px}
 .auth-message{min-height:18px;text-align:center;font-size:11px;color:#8fa297;margin-top:10px;line-height:1.4}
 .hidden-field{display:none!important}
 .small-note{text-align:center;color:#56685e;font-size:9px;margin-top:15px;line-height:1.5}
-@media(max-width:360px){
-main{padding:14px}
-.page-title{font-size:24px}
-.hero{padding:16px}
-.stat-value{font-size:18px}
-}
+@media(max-width:360px){main{padding:14px}.page-title{font-size:24px}.hero{padding:16px}.stat-value{font-size:18px}}
 </style>
 </head>
 <body>
@@ -157,9 +152,10 @@ main{padding:14px}
 <label class="input-label">Password</label>
 <input id="authPassword" class="input" type="password" placeholder="Minimum 6 characters" autocomplete="current-password">
 </div>
-<button id="authActionBtn" class="btn btn-primary" onclick="handleAuth()">Sign In</button>
+<button id="authMainBtn" class="btn btn-primary" onclick="handleAuth()">Sign In</button>
+<button id="authToggleBtn" class="btn btn-secondary" style="margin-top:10px" onclick="toggleAuthMode()">Don't have an account? Create Account</button>
 <div id="authMessage" class="auth-message"></div>
-<div class="small-note">Your account keeps your FitSync profile secure.</div>
+<div class="small-note">By continuing, you agree to FitSync's Terms and Privacy Policy.</div>
 </div>
 </div>
 <div id="app" class="app">
@@ -171,136 +167,119 @@ main{padding:14px}
 <div class="brand-tagline">Track yourself. Improve together.</div>
 </div>
 </div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-secondary btn-small" onclick="showPage('profilePage',null)">👤 Profile</button>
 <button class="btn btn-secondary btn-small" onclick="logout()">Logout</button>
+</div>
 </header>
 <main>
 <section id="homePage" class="page active">
-<div class="page-title">Good day 👋</div>
-<div class="page-subtitle">Keep your health goals moving forward.</div>
+<h1 id="dashboardGreeting" class="page-title">Good day 👋</h1>
+<p class="page-subtitle">Keep your health goals moving forward.</p>
 <div class="hero">
 <div class="hero-top">
 <div>
 <div class="hero-label">Today's score</div>
-<div class="hero-title" id="scoreMessage">Let's make today count.</div>
+<div class="hero-title">Let's make today count.</div>
 </div>
 <div class="score">
-<div class="score-number" id="dailyScore">0</div>
+<div class="score-number" id="dashScore">0</div>
 <div class="score-small">/ 100</div>
 </div>
 </div>
-</div>
-<div class="stat-grid">
+<div class="stat-grid" style="margin-top:18px">
 <div class="stat-card">
 <div class="stat-icon">🔥</div>
-<div class="stat-value" id="homeCalories">0</div>
+<div class="stat-value" id="dashCalories">0</div>
 <div class="stat-label">Calories eaten</div>
 </div>
 <div class="stat-card">
 <div class="stat-icon">💪</div>
-<div class="stat-value" id="homeProtein">0g</div>
+<div class="stat-value" id="dashProtein">0g</div>
 <div class="stat-label">Protein</div>
 </div>
 <div class="stat-card">
 <div class="stat-icon">👣</div>
-<div class="stat-value" id="homeSteps">0</div>
+<div class="stat-value" id="dashSteps">0</div>
 <div class="stat-label">Steps</div>
 </div>
 <div class="stat-card">
 <div class="stat-icon">😴</div>
-<div class="stat-value" id="homeSleep">0h</div>
+<div class="stat-value" id="dashSleep">0h</div>
 <div class="stat-label">Sleep</div>
 </div>
 </div>
-<div class="card">
-<div class="card-header">
-<div class="card-title">Today's progress</div>
 </div>
+<div class="card">
+<div class="card-title">Today's progress</div>
 <div class="progress-row">
 <div class="progress-top">
 <span class="progress-name">Calories</span>
-<span class="progress-number" id="calorieProgressText">0 / 0 kcal</span>
+<span class="progress-number"><span id="progCalories">0</span> / <span id="targetCalories">—</span> kcal</span>
 </div>
-<div class="progress-track"><div id="calorieProgress" class="progress-fill"></div></div>
+<div class="progress-track"><div id="progCaloriesFill" class="progress-fill"></div></div>
 </div>
 <div class="progress-row">
 <div class="progress-top">
 <span class="progress-name">Protein</span>
-<span class="progress-number" id="proteinProgressText">0 / 0 g</span>
+<span class="progress-number"><span id="progProtein">0</span> / <span id="targetProtein">—</span> g</span>
 </div>
-<div class="progress-track"><div id="proteinProgress" class="progress-fill"></div></div>
+<div class="progress-track"><div id="progProteinFill" class="progress-fill"></div></div>
 </div>
 <div class="progress-row">
 <div class="progress-top">
 <span class="progress-name">Steps</span>
-<span class="progress-number" id="stepsProgressText">0 / 8000</span>
+<span class="progress-number"><span id="progSteps">0</span> / 8000</span>
 </div>
-<div class="progress-track"><div id="stepsProgress" class="progress-fill"></div></div>
+<div class="progress-track"><div id="progStepsFill" class="progress-fill"></div></div>
 </div>
 </div>
 <div class="card advisor">
-<div class="advisor-icon">✨</div>
+<div class="advisor-icon">💡</div>
 <div class="advisor-title">Smart Daily Advisor</div>
-<div id="advisorText" class="advisor-text">Add your activity, food and sleep data to get your daily advice.</div>
-</div>
-<div class="card">
-<div class="card-header">
-<div class="card-title">Goal progress</div>
-</div>
-<div class="goal-box">
-<div class="goal-stat">
-<div class="goal-label">Current weight</div>
-<div class="goal-value" id="homeCurrentWeight">— kg</div>
-</div>
-<div class="goal-stat">
-<div class="goal-label">Goal weight</div>
-<div class="goal-value" id="homeGoalWeight">— kg</div>
-</div>
-</div>
+<div class="advisor-text" id="smartAdvisor">Add your activity, food and sleep data to get your daily advice.</div>
 </div>
 </section>
 <section id="foodPage" class="page">
-<div class="page-title">Food</div>
-<div class="page-subtitle">Tell FitSync what you ate and let AI estimate the nutrition.</div>
+<h1 class="page-title">Food</h1>
+<p class="page-subtitle">Tell FitSync what you ate and let AI estimate the nutrition.</p>
 <div class="card">
+<div class="card-header">
 <div class="card-title">Food AI</div>
+</div>
 <div id="foodChat" class="chat-box">
-<div class="msg bot">Tell me what you ate. Example: “I ate 2 eggs and 1 banana.”</div>
+<div class="msg bot">Tell me what you ate. Example: "I ate 2 eggs and 1 banana."</div>
 </div>
 <div class="chat-row">
-<input id="foodInput" class="input" type="text" placeholder="What did you eat?">
+<input id="foodInput" class="input" type="text" placeholder="What did you eat?" onkeydown="if(event.key==='Enter'){analyzeFood();}">
 <button class="chat-send" onclick="analyzeFood()">➤</button>
 </div>
 </div>
 <div class="card">
-<div class="card-header">
 <div class="card-title">Today's nutrition</div>
-</div>
 <div class="mini-grid">
 <div class="mini-card">
-<div class="mini-value" id="foodTotalCalories">0</div>
+<div class="mini-value" id="todayCalories">0</div>
 <div class="mini-label">Calories</div>
 </div>
 <div class="mini-card">
-<div class="mini-value" id="foodTotalProtein">0g</div>
+<div class="mini-value" id="todayProtein">0g</div>
 <div class="mini-label">Protein</div>
 </div>
 <div class="mini-card">
-<div class="mini-value" id="foodTotalFiber">0g</div>
+<div class="mini-value" id="todayFiber">0g</div>
 <div class="mini-label">Fiber</div>
 </div>
 </div>
 </div>
 <div class="card">
-<div class="card-header">
 <div class="card-title">Food history</div>
-<button class="btn btn-danger btn-small" onclick="clearFood()">Clear</button>
-</div>
-<div id="foodHistory"></div>
+<div id="foodList"></div>
 </div>
 </section>
 <section id="activityPage" class="page">
-<div class="page-title">Activity</div>
-<div class="page-subtitle">Manually record your daily movement and recovery.</div>
+<h1 class="page-title">Activity</h1>
+<p class="page-subtitle">Manually record your daily movement and recovery.</p>
 <div class="card">
 <div class="card-title">Today's activity</div>
 <div class="activity-box">
@@ -309,15 +288,15 @@ main{padding:14px}
 <div class="activity-name">Steps</div>
 <div class="activity-description">Enter your current step count.</div>
 </div>
-<input id="stepsInput" class="input" type="number" min="0" placeholder="0" style="width:105px">
+<input id="stepsInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right">
 </div>
 <div class="activity-box">
-<div class="activity-icon">🏋️</div>
+<div class="activity-icon">🏃</div>
 <div class="activity-info">
 <div class="activity-name">Exercise</div>
 <div class="activity-description">Minutes of exercise today.</div>
 </div>
-<input id="exerciseInput" class="input" type="number" min="0" placeholder="0" style="width:105px">
+<input id="exerciseInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right">
 </div>
 <div class="activity-box">
 <div class="activity-icon">😴</div>
@@ -325,7 +304,7 @@ main{padding:14px}
 <div class="activity-name">Sleep</div>
 <div class="activity-description">Hours slept last night.</div>
 </div>
-<input id="sleepInput" class="input" type="number" min="0" max="24" step=".1" placeholder="0" style="width:105px">
+<input id="sleepInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right">
 </div>
 <button class="btn btn-primary" onclick="saveActivity()">Save Activity</button>
 </div>
@@ -333,87 +312,99 @@ main{padding:14px}
 <div class="card-title">Today's summary</div>
 <div class="mini-grid">
 <div class="mini-card">
-<div class="mini-value" id="activitySteps">0</div>
+<div class="mini-value" id="sumSteps">0</div>
 <div class="mini-label">Steps</div>
 </div>
 <div class="mini-card">
-<div class="mini-value" id="activityExercise">0m</div>
+<div class="mini-value" id="sumExercise">0m</div>
 <div class="mini-label">Exercise</div>
 </div>
 <div class="mini-card">
-<div class="mini-value" id="activitySleep">0h</div>
+<div class="mini-value" id="sumSleep">0h</div>
 <div class="mini-label">Sleep</div>
 </div>
 </div>
 </div>
 </section>
 <section id="friendPage" class="page">
-<div class="page-title">Friend</div>
-<div class="page-subtitle">Connect with your friend and compare progress.</div>
+<h1 class="page-title">Friend</h1>
+<p class="page-subtitle">Connect with your friend and compare progress.</p>
 <div class="card">
 <div class="friend-header">
 <div class="avatar" id="friendAvatar">?</div>
-<div>
+<div class="friend-info">
 <div class="friend-name" id="friendName">Not connected</div>
 <div class="friend-status" id="friendStatus">Add a friend to compare progress.</div>
 </div>
 </div>
-<div id="friendContent">
-<div class="empty">Your friend comparison will appear here after the friend system is connected.</div>
+<div class="input-group" style="margin-top:16px">
+<label class="input-label">Friend Code</label>
+<input id="friendCodeInput" class="input" type="text" placeholder="Enter friend's code (e.g. FS1A2B3C4D)">
+</div>
+<button class="btn btn-primary" onclick="connectFriend()">Connect</button>
+<div class="small-note">Your friend comparison will appear here after the friend system is connected.</div>
+</div>
+<div class="card">
+<div class="card-title">Compare</div>
+<div class="compare-row">
+<div class="compare-user">
+<div class="compare-value" id="cmpStepsYou">0</div>
+<div class="compare-label">Your steps</div>
+</div>
+<div class="compare-vs">vs</div>
+<div class="compare-user">
+<div class="compare-value" id="cmpStepsFriend">0</div>
+<div class="compare-label">Friend's steps</div>
+</div>
 </div>
 </div>
 </section>
-<section id="progressPage" class="page">
-<div class="page-title">Progress</div>
-<div class="page-subtitle">See your current goals and weekly progress.</div>
+<section id="goalPage" class="page">
+<h1 class="page-title">Progress</h1>
+<p class="page-subtitle">See your current goals and weekly progress.</p>
 <div class="card">
 <div class="card-title">Weight goal</div>
 <div class="goal-box">
 <div class="goal-stat">
 <div class="goal-label">Start weight</div>
-<div class="goal-value" id="startWeightDisplay">— kg</div>
+<div class="goal-value" id="currentWeightValue">— kg</div>
 </div>
 <div class="goal-stat">
 <div class="goal-label">Goal weight</div>
-<div class="goal-value" id="progressGoalWeight">— kg</div>
+<div class="goal-value" id="goalWeightValue">— kg</div>
 </div>
 </div>
-<div style="height:12px"></div>
-<div class="progress-row">
+<div class="input-group" style="margin-top:16px">
+<label class="input-label">Current weight (kg)</label>
+<input id="currentWeight" class="input" type="number" placeholder="e.g. 70">
+</div>
+<div class="input-group">
+<label class="input-label">Goal weight (kg)</label>
+<input id="goalWeight" class="input" type="number" placeholder="e.g. 65">
+</div>
+<button class="btn btn-primary" onclick="calculateGoals()">Calculate Targets</button>
+<div style="margin-top:18px">
 <div class="progress-top">
 <span class="progress-name">Goal progress</span>
-<span class="progress-number" id="goalProgressText">0%</span>
+<span class="progress-number" id="goalProgressPct">0%</span>
 </div>
 <div class="progress-track"><div id="goalProgress" class="progress-fill"></div></div>
 </div>
 </div>
 <div class="card">
 <div class="card-title">Weekly result</div>
-<div class="mini-grid">
-<div class="mini-card">
-<div class="mini-value" id="weeklyScore">0</div>
-<div class="mini-label">Score</div>
-</div>
-<div class="mini-card">
-<div class="mini-value" id="weeklySteps">0</div>
-<div class="mini-label">Steps</div>
-</div>
-<div class="mini-card">
-<div class="mini-value" id="weeklyExercise">0m</div>
-<div class="mini-label">Exercise</div>
-</div>
-</div>
-<div id="weeklyMessage" class="advisor-text" style="margin-top:14px">Your weekly result will update on Sunday.</div>
+<div id="weeklyResult"></div>
+<div class="small-note">Your weekly result will update on Sunday.</div>
 </div>
 </section>
-<section id="settingsPage" class="page">
-<div class="page-title">Profile</div>
-<div class="page-subtitle">Set your information and nutrition goals.</div>
+<section id="profilePage" class="page">
+<h1 class="page-title">Profile</h1>
+<p class="page-subtitle">Set your information and nutrition goals.</p>
 <div class="card">
 <div class="card-title">Account</div>
 <div class="setting-row">
 <div class="setting-info">
-<div class="setting-name" id="profileUsername">User</div>
+<div class="setting-name">User</div>
 <div class="setting-description" id="profileEmail">—</div>
 </div>
 </div>
@@ -422,58 +413,52 @@ main{padding:14px}
 <div class="setting-name">Friend Code</div>
 <div class="setting-description" id="profileFriendCode">—</div>
 </div>
-<button class="btn btn-secondary btn-small" onclick="copyFriendCode()">Copy</button>
 </div>
 </div>
 <div class="card">
 <div class="card-title">Body & goals</div>
 <div class="input-group">
-<label class="input-label">Current weight (kg)</label>
-<input id="currentWeightInput" class="input" type="number" min="20" max="300" step=".1" placeholder="75">
+<label class="input-label">Starting weight (kg)</label>
+<input id="startWeightInput" class="input" type="number" placeholder="e.g. 75">
 </div>
-<div class="input-group">
-<label class="input-label">Goal weight (kg)</label>
-<input id="goalWeightInput" class="input" type="number" min="20" max="300" step=".1" placeholder="70">
+<button class="btn btn-secondary" onclick="saveStartWeight()">Save Starting Weight</button>
+<div style="margin-top:16px">
+<div class="goal-box">
+<div class="goal-stat">
+<div class="goal-label">Recommended daily targets</div>
+<div class="goal-value"><span id="recCalories">0</span><div class="friend-status">Calories</div></div>
 </div>
-<button class="btn btn-primary" onclick="saveGoals()">Save Goals</button>
+<div class="goal-stat">
+<div class="goal-value"><span id="recProtein">0g</span><div class="friend-status">Protein</div></div>
 </div>
-<div class="card">
-<div class="card-title">Recommended daily targets</div>
-<div class="mini-grid">
-<div class="mini-card">
-<div class="mini-value" id="targetCalories">0</div>
-<div class="mini-label">Calories</div>
-</div>
-<div class="mini-card">
-<div class="mini-value" id="targetProtein">0g</div>
-<div class="mini-label">Protein</div>
-</div>
-<div class="mini-card">
-<div class="mini-value">8000</div>
-<div class="mini-label">Steps</div>
+<div class="goal-stat">
+<div class="goal-value">8000<div class="friend-status">Steps</div></div>
 </div>
 </div>
 </div>
-<div class="card">
-<button class="btn btn-danger" onclick="logout()">Sign Out</button>
 </div>
 </section>
 </main>
 <nav class="bottom-nav">
-<button class="nav-btn active" data-page="homePage" onclick="showPage('homePage',this)">
-<span class="nav-icon">⌂</span><span>Home</span>
+<button class="nav-btn nav-item active" onclick="showPage('homePage',this)">
+<span class="nav-icon">🏠</span>
+<span>Home</span>
 </button>
-<button class="nav-btn" data-page="foodPage" onclick="showPage('foodPage',this)">
-<span class="nav-icon">🍎</span><span>Food</span>
+<button class="nav-btn nav-item" onclick="showPage('foodPage',this)">
+<span class="nav-icon">🍽️</span>
+<span>Food</span>
 </button>
-<button class="nav-btn" data-page="activityPage" onclick="showPage('activityPage',this)">
-<span class="nav-icon">🏃</span><span>Activity</span>
+<button class="nav-btn nav-item" onclick="showPage('activityPage',this)">
+<span class="nav-icon">🏃</span>
+<span>Activity</span>
 </button>
-<button class="nav-btn" data-page="friendPage" onclick="showPage('friendPage',this)">
-<span class="nav-icon">👥</span><span>Friend</span>
+<button class="nav-btn nav-item" onclick="showPage('friendPage',this)">
+<span class="nav-icon">👥</span>
+<span>Friend</span>
 </button>
-<button class="nav-btn" data-page="progressPage" onclick="showPage('progressPage',this)">
-<span class="nav-icon">📈</span><span>Progress</span>
+<button class="nav-btn nav-item" onclick="showPage('goalPage',this)">
+<span class="nav-icon">📈</span>
+<span>Progress</span>
 </button>
 </nav>
 <div id="toast" class="toast"></div>
@@ -483,941 +468,38 @@ main{padding:14px}
 const SUPABASE_URL="https://bdduwgyyxtqvlzzfpwzs.supabase.co";
 const SUPABASE_KEY="sb_publishable_wtbNjoyb0xW9isu3oNRcaA_xF75j9fn";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-  alert("JavaScript is running!");
-  
-// DEBUG CODE START
-console.log("Supabase loaded:", typeof supabase);
-console.log("Client ready:", !!supabaseClient);
-// DEBUG CODE END
-
 const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
+const STORAGE_KEY="fitsync_data_v1";
 let authMode="login";
-let currentUser=null;
-let profileData=null;
-let data={
-foods:[],
-steps:0,
-exercise:0,
-sleep:0,
-currentWeight:0,
-goalWeight:0,
-startWeight:0
-};
-const todayKey=()=>{
-const d=new Date();
-return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-};
-function showToast(message){
-const toast=document.getElementById("toast");
-toast.textContent=message;
-toast.classList.add("show");
-clearTimeout(window.__toastTimer);
-window.__toastTimer=setTimeout(()=>toast.classList.remove("show"),2500);
-}
-function showAuthMode(mode){
-authMode=mode;
-document.getElementById("loginTab").classList.toggle("active",mode==="login");
-document.getElementById("signupTab").classList.toggle("active",mode==="signup");
-document.getElementById("signupFields").classList.toggle("hidden-field",mode!=="signup");
-document.getElementById("authActionBtn").textContent=mode==="login"?"Sign In":"Create Account";
-document.getElementById("authMessage").textContent="";
-}
-function setAuthMessage(message){
-document.getElementById("authMessage").textContent=message;
-}
-async function ensureProfile(user,username){
-if(!user)return null;
-const {data:existing,error:selectError}=await supabaseClient.from("profiles").select("id,username,friend_code").eq("id",user.id).maybeSingle();
-if(selectError){
-console.error(selectError);
-return null;
-}
-if(existing){
-profileData=existing;
-return existing;
-}
-const friendCode="FS-"+crypto.randomUUID().replaceAll("-","").slice(0,8).toUpperCase();
-const {data:created,error:insertError}=await supabaseClient.from("profiles").insert({
-id:user.id,
-username:username||"User",
-friend_code:friendCode
-}).select("id,username,friend_code").single();
-if(insertError){
-console.error(insertError);
-return null;
-}
-profileData=created;
-return created;
-}
-  async function handleAuth(){
-  const email=document.getElementById("authEmail").value.trim();
-  const password=document.getElementById("authPassword").value;
-  const username=document.getElementById("authUsername")?.value.trim()||"";
-  
-  if(typeof supabase === 'undefined'){
-    alert("ERROR: Supabase not loaded!");
-    return;
-  }
-  
-  if(!email||!password){
-    setAuthMessage("Please enter email and password.");
-    alert("Missing email or password");
-    return;
-  }
-  if(authMode==="signup"&&!username){
-    setAuthMessage("Please enter a username.");
-    alert("Missing username");
-    return;
-  }
-  if(password.length<6){
-    setAuthMessage("Password must be at least 6 characters.");
-    alert("Password too short");
-    return;
-  }
-  
-  const mainBtn=document.getElementById("authMainBtn");
-  mainBtn.disabled=true;
-  setAuthMessage("Please wait...");
-  
-  try{
-    if(authMode==="signup"){
-      alert("Signing up with: "+email);
-      const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
-      if(error){
-        alert("ERROR: "+error.message);
-        throw error;
-      }
-      if(authData.session){
-        await ensureProfile(authData.user,username);
-        alert("SUCCESS! Account created.");
-        await checkAuth();
-      }else{
-        alert("Account created. Check email.");
-      }
-    }else{
-      alert("Signing in with: "+email);
-      const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
-      if(error){
-        alert("ERROR: "+error.message);
-        throw error;
-      }
-      await ensureProfile(authData.user,username||"User");
-      alert("SUCCESS! Signed in.");
-      await checkAuth();
-    }
-  }catch(error){
-    alert("ERROR: "+error.message);
-    setAuthMessage(error.message||"Authentication failed.");
-  }finally{
-    mainBtn.disabled=false;
-  }
-}
-async function logout(){
-try{
-await supabaseClient.auth.signOut();
-}catch(error){
-console.error(error);
-}
-currentUser=null;
-profileData=null;
-document.getElementById("authScreen").classList.remove("hidden");
-showAuthMode("login");
-}
-async function checkAuth(){
-const {data:sessionData}=await supabaseClient.auth.getSession();
-if(sessionData&&sessionData.session){
-currentUser=sessionData.session.user;
-await ensureProfile(currentUser);
-document.getElementById("authScreen").classList.add("hidden");
-await loadData();
-updateUI();
-}else{
-document.getElementById("authScreen").classList.remove("hidden");
-}
-supabaseClient.auth.onAuthStateChange(async(event,session)=>{
-if(session){
-currentUser=session.user;
-await ensureProfile(currentUser);
-document.getElementById("authScreen").classList.add("hidden");
-await loadData();
-updateUI();
-}else{
-currentUser=null;
-profileData=null;
-document.getElementById("authScreen").classList.remove("hidden");
-}
-});
-}
-function storageKey(){
-return currentUser?"fitsync_data_"+currentUser.id:"fitsync_data_guest";
-}
-async function loadData(){
-const saved=localStorage.getItem(storageKey());
-if(saved){
-try{
-const parsed=JSON.parse(saved);
-data={...data,...parsed};
-}catch(error){
-console.error(error);
-}
-}
-const key=todayKey();
-if(data.day!==key){
-data.foods=[];
-data.steps=0;
-data.exercise=0;
-data.sleep=0;
-data.day=key;
-saveLocal();
-}
-}
-function saveLocal(){
-data.day=todayKey();
-localStorage.setItem(storageKey(),JSON.stringify(data));
-}
-function showPage(pageId,button){
-document.querySelectorAll(".page").forEach(page=>page.classList.remove("active"));
-const page=document.getElementById(pageId);
-if(page)page.classList.add("active");
-document.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.remove("active"));
-if(button)button.classList.add("active");
-window.scrollTo({top:0,behavior:"smooth"});
-updateUI();
-}
-function addMessage(text,type){
-const box=document.getElementById("foodChat");
-const div=document.createElement("div");
-div.className="msg "+type;
-div.textContent=text;
-box.appendChild(div);
-box.scrollTop=box.scrollHeight;
-}
-async function analyzeFood(){
-const input=document.getElementById("foodInput");
-const text=input.value.trim();
-if(!text)return;
-addMessage(text,"me");
-input.value="";
-addMessage("Analyzing your food...","bot");
-try{
-const response=await fetch(API_URL,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({food:text})
-});
-if(!response.ok)throw new Error("AI request failed");
-const result=await response.json();
-const box=document.getElementById("foodChat");
-if(box.lastElementChild&&box.lastElementChild.textContent==="Analyzing your food..."){
-box.removeChild(box.lastElementChild);
-}
-if(!result.food){
-addMessage("I couldn't understand that food. Please try again with quantity.","bot");
-return;
-}
-const food={
-id:Date.now(),
-food:result.food,
-quantity:result.quantity||"1 serving",
-calories:Number(result.calories)||0,
-protein_g:Number(result.protein_g)||0,
-fiber_g:Number(result.fiber_g)||0,
-confidence:result.confidence||"medium",
-note:result.note||""
-};
-data.foods.push(food);
-saveLocal();
-updateUI();
-let reply="Added "+food.food+" ("+food.quantity+").\nCalories: "+food.calories+" kcal\nProtein: "+food.protein_g+" g\nFiber: "+food.fiber_g+" g";
-if(food.note)reply+="\n"+food.note;
-addMessage(reply,"bot");
-}catch(error){
-console.error(error);
-const box=document.getElementById("foodChat");
-if(box.lastElementChild&&box.lastElementChild.textContent==="Analyzing your food..."){
-box.removeChild(box.lastElementChild);
-}
-addMessage("I couldn't analyze that right now. Check your internet connection and try again.","bot");
-}
-}
-function clearFood(){
-if(!data.foods.length)return;
-if(confirm("Clear today's food history?")){
-data.foods=[];
-saveLocal();
-updateUI();
-const box=document.getElementById("foodChat");
-box.innerHTML='<div class="msg bot">Tell me what you ate. Example: “I ate 2 eggs and 1 banana.”</div>';
-}
-}
-function saveActivity(){
-const steps=Math.max(0,Number(document.getElementById("stepsInput").value)||0);
-const exercise=Math.max(0,Number(document.getElementById("exerciseInput").value)||0);
-const sleep=Math.max(0,Number(document.getElementById("sleepInput").value)||0);
-data.steps=steps;
-data.exercise=exercise;
-data.sleep=sleep;
-saveLocal();
-updateUI();
-showToast("Activity saved.");
-}
-function saveGoals(){
-const current=Math.max(0,Number(document.getElementById("currentWeightInput").value)||0);
-const goal=Math.max(0,Number(document.getElementById("goalWeightInput").value)||0);
-if(!current||!goal){
-showToast("Enter both weights.");
-return;
-}
-if(!data.startWeight)data.startWeight=current;
-data.currentWeight=current;
-data.goalWeight=goal;
-saveLocal();
-updateUI();
-showToast("Goals saved.");
-}
-function getTargets(){
-const weight=Number(data.currentWeight)||0;
-if(!weight)return{calories:0,protein:0};
-let calories=Math.round(weight*30);
-if(data.goalWeight){
-if(data.goalWeight<weight)calories-=300;
-if(data.goalWeight>weight)calories+=250;
-}
-calories=Math.max(1200,calories);
-const protein=Math.round(weight*1.6);
-return{calories,protein};
-}
-function calculateScore(){
-const targets=getTargets();
-const calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);
-const protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein_g)||0),0);
-let score=0;
-if(targets.calories){
-const calorieRatio=calories/targets.calories;
-if(calorieRatio>=.85&&calorieRatio<=1.1)score+=30;
-else if(calorieRatio>=.7&&calorieRatio<=1.25)score+=20;
-else if(calories>0)score+=10;
-}
-if(targets.protein){
-const proteinRatio=protein/targets.protein;
-if(proteinRatio>=1)score+=25;
-else if(proteinRatio>=.75)score+=20;
-else if(proteinRatio>=.5)score+=12;
-}
-if(data.steps>=8000)score+=20;
-else if(data.steps>=5000)score+=14;
-else if(data.steps>=2500)score+=8;
-if(data.exercise>=30)score+=15;
-else if(data.exercise>=15)score+=10;
-else if(data.exercise>0)score+=5;
-if(data.sleep>=7&&data.sleep<=9)score+=10;
-else if(data.sleep>=6)score+=7;
-else if(data.sleep>0)score+=3;
-return Math.min(100,Math.round(score));
-}
-function renderSmartAttendanceAdvisor(){
-const targets=getTargets();
-const calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);
-const protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein_g)||0),0);
-const messages=[];
-if(!targets.calories){
-messages.push("Set your current and goal weight to get personalized calorie and protein targets.");
-}else{
-const calorieRemaining=targets.calories-calories;
-const proteinRemaining=targets.protein-protein;
-if(calorieRemaining>0)messages.push("You have about "+Math.max(0,Math.round(calorieRemaining))+" kcal remaining for today's target.");
-else messages.push("You have reached your calorie target for today.");
-if(proteinRemaining>0)messages.push("Try to get about "+Math.max(0,Math.round(proteinRemaining))+" g more protein.");
-else messages.push("You have reached your protein target.");
-}
-if(data.steps<8000)messages.push("A little more walking can help you reach 8,000 steps.");
-else messages.push("Great work on your steps today.");
-if(data.exercise<30)messages.push("Aim for around 30 minutes of exercise if possible.");
-else messages.push("Nice job getting your exercise in.");
-if(data.sleep<7)messages.push("Try to get 7–9 hours of sleep tonight.");
-else if(data.sleep<=9)messages.push("Your sleep is in a good range.");
-else messages.push("You may want to keep your sleep schedule consistent.");
-document.getElementById("advisorText").textContent=messages.join(" ");
-}
-function renderFood(){
-const calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);
-const protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein_g)||0),0);
-const fiber=data.foods.reduce((sum,item)=>sum+(Number(item.fiber_g)||0),0);
-document.getElementById("foodTotalCalories").textContent=Math.round(calories);
-document.getElementById("foodTotalProtein").textContent=Math.round(protein)+"g";
-document.getElementById("foodTotalFiber").textContent=Math.round(fiber)+"g";
-const history=document.getElementById("foodHistory");
-if(!data.foods.length){
-history.innerHTML='<div class="empty">No food added today yet.</div>';
-return;
-}
-history.innerHTML=data.foods.map((item,index)=>`
-<div class="food-item">
-<div class="food-main">
-<div class="food-name">${escapeHtml(item.food)}</div>
-<div class="food-quantity">${escapeHtml(item.quantity||"1 serving")}</div>
-</div>
-<div class="food-nutrition">
-<div class="food-cal">${Math.round(Number(item.calories)||0)} kcal</div>
-<div class="food-protein">${Math.round(Number(item.protein_g)||0)}g protein</div>
-</div>
-<button class="btn btn-danger btn-small" onclick="deleteFood(${index})">×</button>
-</div>
-`).join("");
-}
-function deleteFood(index){
-data.foods.splice(index,1);
-saveLocal();
-updateUI();
-}
-function escapeHtml(value){
-return String(value??"").replace(/[&<>"']/g,char=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-}[char]));
-}
-  <script>
-const SUPABASE_URL="PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
-const SUPABASE_KEY="PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
-const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
-const STORAGE_KEY="fitsync_data";
-let data={
-calories:0,
-protein:0,
-fiber:0,
-steps:0,
-exercise:0,
-sleep:0,
-currentWeight:0,
-goalWeight:0,
-calorieTarget:0,
-proteinTarget:0,
-foods:[],
-weekly:{}
-};
-function loadData(){
-try{
-const saved=localStorage.getItem(STORAGE_KEY);
-if(saved){
-const parsed=JSON.parse(saved);
-data={...data,...parsed};
-}
-}catch(error){
-console.error("FitSync data load error:",error);
-}
-}
-function saveData(){
-localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-}
-function showPage(pageId,button){
-document.querySelectorAll(".page").forEach(page=>{
-page.classList.remove("active");
-});
-const page=document.getElementById(pageId);
-if(page){
-page.classList.add("active");
-}
-document.querySelectorAll(".nav-item").forEach(item=>{
-item.classList.remove("active");
-});
-if(button){
-button.classList.add("active");
-}
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-}
-function addMessage(text,type){
-const chat=document.getElementById("foodChat");
-if(!chat)return;
-const message=document.createElement("div");
-message.className="msg "+type;
-message.innerHTML=text;
-chat.appendChild(message);
-chat.scrollTop=chat.scrollHeight;
-}
-async function analyzeFood(){
-const input=document.getElementById("foodInput");
-const text=input.value.trim();
-if(!text)return;
-addMessage(text,"me");
-input.value="";
-const loadingId="ai-loading-"+Date.now();
-addMessage(`<span id="${loadingId}">🤖 Analyzing your food with FitSync AI...</span>`,"bot");
-try{
-const response=await fetch(API_URL,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-food:text
-})
-});
-const dataFromAI=await response.json();
-const loading=document.getElementById(loadingId);
-if(loading){
-const parent=loading.closest(".msg");
-if(parent)parent.remove();
-}
-if(!response.ok||!dataFromAI.success){
-throw new Error(dataFromAI.error||"AI analysis failed");
-}
-const result=dataFromAI.result||{};
-const food={
-name:result.food||text,
-quantity:result.quantity||"1 serving",
-calories:Number(result.calories)||0,
-protein:Number(result.protein_g)||0,
-fiber:Number(result.fiber_g)||0,
-confidence:result.confidence||"medium",
-note:result.note||""
-};
-data.foods.push(food);
-data.calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);
-data.protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein)||0),0);
-data.fiber=data.foods.reduce((sum,item)=>sum+(Number(item.fiber)||0),0);
-saveData();
-updateUI();
-addMessage(
-`<strong>${escapeHTML(food.name)}</strong><br>Quantity: ${escapeHTML(food.quantity)}<br>🔥 ${Math.round(food.calories)} kcal &nbsp; 💪 ${food.protein.toFixed(1)}g protein &nbsp; 🌾 ${food.fiber.toFixed(1)}g fiber${food.note?`<br><span class="small-note">${escapeHTML(food.note)}</span>`:""}`,
-"bot"
-);
-}catch(error){
-const loading=document.getElementById(loadingId);
-if(loading){
-const parent=loading.closest(".msg");
-if(parent)parent.remove();
-}
-addMessage("Sorry, I couldn't analyze that food. Please try again.","bot");
-console.error("Food AI error:",error);
-}
-}
-function updateUI(){
-updateDashboard();
-updateFoodHistory();
-updateActivityUI();
-updateGoalUI();
-updateScore();
-updateSmartAdvisor();
-updateFriendUI();
-updateWeeklyUI();
-}
-function updateDashboard(){
-const caloriesEl=document.getElementById("dashCalories");
-const proteinEl=document.getElementById("dashProtein");
-const stepsEl=document.getElementById("dashSteps");
-const exerciseEl=document.getElementById("dashExercise");
-const sleepEl=document.getElementById("dashSleep");
-if(caloriesEl)caloriesEl.textContent=Math.round(data.calories||0);
-if(proteinEl)proteinEl.textContent=(Number(data.protein)||0).toFixed(1)+" g";
-if(stepsEl)stepsEl.textContent=Number(data.steps)||0;
-if(exerciseEl)exerciseEl.textContent=(Number(data.exercise)||0)+" min";
-if(sleepEl)sleepEl.textContent=(Number(data.sleep)||0)+" h";
-const greeting=document.getElementById("dashboardGreeting");
-if(greeting){
-const hour=new Date().getHours();
-greeting.textContent=hour<12?"Good morning!":hour<18?"Good afternoon!":"Good evening!";
-}
-}
-function updateActivityUI(){
-const stepsInput=document.getElementById("stepsInput");
-const exerciseInput=document.getElementById("exerciseInput");
-const sleepInput=document.getElementById("sleepInput");
-if(stepsInput)stepsInput.value=data.steps||"";
-if(exerciseInput)exerciseInput.value=data.exercise||"";
-if(sleepInput)sleepInput.value=data.sleep||"";
-}
-function saveActivity(){
-const steps=document.getElementById("stepsInput");
-const exercise=document.getElementById("exerciseInput");
-const sleep=document.getElementById("sleepInput");
-data.steps=Math.max(0,Number(steps?.value)||0);
-data.exercise=Math.max(0,Number(exercise?.value)||0);
-data.sleep=Math.max(0,Number(sleep?.value)||0);
-saveData();
-updateUI();
-toast("Activity saved ✓");
-}
-function updateGoalUI(){
-const current=document.getElementById("currentWeight");
-const goal=document.getElementById("goalWeight");
-const targetCalories=document.getElementById("targetCalories");
-const targetProtein=document.getElementById("targetProtein");
-if(current)current.value=data.currentWeight||"";
-if(goal)goal.value=data.goalWeight||"";
-if(targetCalories)targetCalories.textContent=data.calorieTarget?Math.round(data.calorieTarget):"—";
-if(targetProtein)targetProtein.textContent=data.proteinTarget?(Number(data.proteinTarget).toFixed(0)+" g"):"—";
-const currentWeightEl=document.getElementById("currentWeightValue");
-const goalWeightEl=document.getElementById("goalWeightValue");
-if(currentWeightEl)currentWeightEl.textContent=data.currentWeight?Number(data.currentWeight).toFixed(1)+" kg":"—";
-if(goalWeightEl)goalWeightEl.textContent=data.goalWeight?Number(data.goalWeight).toFixed(1)+" kg":"—";
-const progress=document.getElementById("goalProgress");
-if(progress){
-let ratio=0;
-if(data.currentWeight&&data.goalWeight){
-const start=Number(data.startWeight)||Number(data.currentWeight);
-const currentValue=Number(data.currentWeight);
-const target=Number(data.goalWeight);
-const total=Math.abs(start-target);
-const remaining=Math.abs(currentValue-target);
-ratio=total>0?(1-Math.min(remaining/total,1)):0;
-if(start===target)ratio=1;
-}
-progress.style.width=Math.max(0,Math.min(100,ratio*100))+"%";
-}
-}
-function calculateGoals(){
-const current=Number(document.getElementById("currentWeight")?.value)||0;
-const goal=Number(document.getElementById("goalWeight")?.value)||0;
-if(current<=0||goal<=0){
-toast("Enter valid current and goal weight");
-return;
-}
-if(!data.startWeight){
-data.startWeight=current;
-}
-data.currentWeight=current;
-data.goalWeight=goal;
-let calories=current*30;
-if(goal<current){
-calories-=300;
-}else if(goal>current){
-calories+=250;
-}
-data.calorieTarget=Math.max(1200,Math.round(calories));
-data.proteinTarget=Math.round(current*1.6);
-saveData();
-updateUI();
-toast("Your targets are ready ✓");
-}
-function saveStartWeight(){
-const input=document.getElementById("startWeightInput");
-const value=Number(input?.value)||0;
-if(value<=0){
-toast("Enter a valid starting weight");
-return;
-}
-data.startWeight=value;
-if(!data.currentWeight){
-data.currentWeight=value;
-}
-saveData();
-updateUI();
-toast("Starting weight saved ✓");
-}
-function updateScore(){
-const scoreEl=document.getElementById("dailyScore");
-const scoreRing=document.getElementById("scoreRing");
-const scoreMessage=document.getElementById("scoreMessage");
-let score=0;
-let parts=0;
-if(data.calorieTarget>0){
-const calorieRatio=Number(data.calories||0)/Number(data.calorieTarget);
-if(calorieRatio>=0.85&&calorieRatio<=1.1)score+=25;
-else if(calorieRatio>=0.7&&calorieRatio<=1.25)score+=18;
-else score+=10;
-parts++;
-}
-if(data.proteinTarget>0){
-const proteinRatio=Number(data.protein||0)/Number(data.proteinTarget);
-if(proteinRatio>=0.9)score+=20;
-else if(proteinRatio>=0.7)score+=14;
-else score+=7;
-parts++;
-}
-if(Number(data.steps)>=8000)score+=20;
-else if(Number(data.steps)>=5000)score+=14;
-else if(Number(data.steps)>0)score+=8;
-if(Number(data.exercise)>=30)score+=15;
-else if(Number(data.exercise)>=15)score+=10;
-else if(Number(data.exercise)>0)score+=5;
-if(Number(data.sleep)>=7&&Number(data.sleep)<=9)score+=20;
-else if(Number(data.sleep)>=6)score+=14;
-else if(Number(data.sleep)>0)score+=7;
-score=Math.round(Math.max(0,Math.min(100,score)));
-if(scoreEl)scoreEl.textContent=score;
-if(scoreRing)scoreRing.style.setProperty("--score",score+"%");
-if(scoreMessage){
-if(score>=85)scoreMessage.textContent="Excellent day! Keep it going.";
-else if(score>=70)scoreMessage.textContent="Good work. A few small improvements can make it better.";
-else if(score>=50)scoreMessage.textContent="You're making progress. Focus on the basics today.";
-else scoreMessage.textContent="Let's build a stronger routine today.";
-}
-data.todayScore=score;
-saveData();
-}
-function updateSmartAdvisor(){
-const box=document.getElementById("smartAdvisor");
-if(!box)return;
-const tips=[];
-const calories=Number(data.calories)||0;
-const protein=Number(data.protein)||0;
-const steps=Number(data.steps)||0;
-const exercise=Number(data.exercise)||0;
-const sleep=Number(data.sleep)||0;
-if(data.calorieTarget>0){
-if(calories<data.calorieTarget*0.7)tips.push("Your calorie intake is quite low today.");
-else if(calories>data.calorieTarget*1.15)tips.push("Your calories are above your target today.");
-else tips.push("Your calorie intake is close to your target.");
-}
-if(data.proteinTarget>0&&protein<data.proteinTarget*0.8){
-tips.push("Try adding a protein-rich food such as eggs, dal, paneer, curd or chicken.");
-}
-if(steps<5000){
-tips.push("Try to add a short walk and move toward 5,000+ steps.");
-}else if(steps<8000){
-tips.push("You're moving well. A little more walking can take you toward 8,000 steps.");
-}
-if(exercise<20){
-tips.push("A 20–30 minute workout or brisk walk would help.");
-}
-if(sleep>0&&sleep<7){
-tips.push("Try to get closer to 7–9 hours of sleep tonight.");
-}
-if(!tips.length){
-tips.push("Your tracked habits look balanced today. Keep the routine consistent.");
-}
-box.innerHTML=tips.slice(0,3).map(t=>`<div class="advisor-tip">💡 ${escapeHTML(t)}</div>`).join("");
-}
-function updateFriendUI(){
-const status=document.getElementById("friendStatus");
-const friendName=document.getElementById("friendName");
-const friendScore=document.getElementById("friendScore");
-const friendSteps=document.getElementById("friendSteps");
-if(status)status.textContent="Not connected";
-if(friendName)friendName.textContent="No friend connected";
-if(friendScore)friendScore.textContent="—";
-if(friendSteps)friendSteps.textContent="—";
-}
-function updateWeeklyUI(){
-const resultScore=document.getElementById("weeklyScore");
-const resultText=document.getElementById("weeklyText");
-const day=new Date().getDay();
-const score=Number(data.todayScore)||0;
-if(resultScore)resultScore.textContent=score||"—";
-if(resultText){
-if(day===0){
-resultText.textContent=score?"Sunday result is based on your current tracked score.":"Track your activity and food to see your result.";
-}else{
-resultText.textContent="Your weekly result will be shown here on Sunday.";
-}
-}
-}
-function addFoodFromBox(){
-const name=document.getElementById("foodName")?.value.trim();
-const quantity=document.getElementById("foodQuantity")?.value.trim()||"1 serving";
-const calories=Number(document.getElementById("foodCalories")?.value)||0;
-const protein=Number(document.getElementById("foodProtein")?.value)||0;
-const fiber=Number(document.getElementById("foodFiber")?.value)||0;
-if(!name){
-toast("Enter food name");
-return;
-}
-data.foods.push({
-name,
-quantity,
-calories,
-protein,
-fiber,
-confidence:"manual",
-note:"Added manually"
-});
-data.calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);
-data.protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein)||0),0);
-data.fiber=data.foods.reduce((sum,item)=>sum+(Number(item.fiber)||0),0);
-saveData();
-updateUI();
-clearFoodInput();
-toast("Food added ✓");
-}
-function clearFoodInput(){
-const ids=["foodName","foodQuantity","foodCalories","foodProtein","foodFiber"];
-ids.forEach(id=>{
-const el=document.getElementById(id);
-if(el)el.value="";
-});
-}
-function clearFoodHistory(){
-if(!data.foods.length){
-toast("Food history is already empty");
-return;
-}
-if(!confirm("Clear all food history for today?"))return;
-data.foods=[];
-data.calories=0;
-data.protein=0;
-data.fiber=0;
-saveData();
-updateUI();
-toast("Food history cleared");
-}
-function toast(message){
-const toastEl=document.getElementById("toast");
-if(!toastEl)return;
-toastEl.textContent=message;
-toastEl.classList.add("show");
-clearTimeout(window.__fitToast);
-window.__fitToast=setTimeout(()=>{
-toastEl.classList.remove("show");
-},2200);
-}
-function renderWeeklyResult(){
-const box=document.getElementById("weeklyResult");
-if(!box)return;
-const today=new Date();
-const day=today.getDay();
-if(day===0){
-const score=calculateScore();
-box.innerHTML=`<div class="card"><h3>🏆 Sunday Result</h3><div class="big-number">${score}/100</div><p>This week's current result is based on your nutrition, steps, exercise and sleep.</p><button onclick="showPage('home')">Back to Home</button></div>`;
-}else{
-box.innerHTML=`<div class="card"><h3>📅 Weekly Result</h3><p>Your weekly result will be shown on Sunday.</p><p>Keep tracking your food, steps, exercise and sleep every day.</p></div>`;
-}
-}
-function renderFriend(){
-const box=document.getElementById("friendContent");
-if(!box)return;
-const myScore=calculateScore();
-const mySteps=Number(data.steps)||0;
-box.innerHTML=`<div class="card"><h3>👥 Your Progress</h3><div class="friend-row"><div><strong>You</strong><br><span>${mySteps.toLocaleString()} steps</span><br><b>${myScore}/100</b></div><div><strong>Friend</strong><br><span>Not connected</span><br><b>—</b></div></div></div><div class="card"><h3>🤝 Friend Connection</h3><p>Friend Code connection will be added after authentication is verified.</p><p>For now, your own progress is available above.</p></div>`;
-}
-function updateProgress(){
-const current=Number(data.currentWeight)||0;
-const goal=Number(data.goalWeight)||0;
-const el=document.getElementById("weightProgress");
-if(!el)return;
-if(!current||!goal){
-el.innerHTML="<p>Set your current and goal weight to track progress.</p>";
-return;
-}
-const start=Number(data.startWeight)||current;
-let progress=0;
-if(start!==goal){
-progress=((start-current)/(start-goal))*100;
-}
-progress=Math.max(0,Math.min(100,progress));
-el.innerHTML=`<div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div><p>${progress.toFixed(0)}% progress toward your goal</p><p>Current: ${current} kg • Goal: ${goal} kg</p>`;
-}
-function saveStartWeight(){
-const current=Number(document.getElementById("currentWeightInput")?.value)||0;
-if(current&&!data.startWeight)data.startWeight=current;
-}
-function showToast(message){
-let toast=document.getElementById("fitsyncToast");
-if(!toast){
-toast=document.createElement("div");
-toast.id="fitsyncToast";
-toast.className="toast";
-document.body.appendChild(toast);
-}
-toast.textContent=message;
-toast.classList.add("show");
-setTimeout(()=>toast.classList.remove("show"),2200);
-}
-function clearFoodInput(){
-const input=document.getElementById("foodInput");
-if(input)input.value="";
-}
-function clearFoodHistory(){
-if(!confirm("Clear all food history?"))return;
-data.foods=[];
-data.calories=0;
-data.protein=0;
-data.fiber=0;
-saveData();
-updateUI();
-showToast("Food history cleared");
-}
-function resetFitSync(){
-if(!confirm("Reset all FitSync data?"))return;
-localStorage.removeItem(STORAGE_KEY);
-location.reload();
-}
-function registerPWA(){
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js").catch(()=>{});
-}
-}
-document.addEventListener("DOMContentLoaded",()=>{
-renderFriend();
-renderWeeklyResult();
-updateProgress();
-registerPWA();
-});
-let authMode="signup";
-function toggleAuthMode(){
-authMode=authMode==="signup"?"login":"signup";
-const username=document.getElementById("authUsername");
-const mainBtn=document.getElementById("authMainBtn");
-const toggleBtn=document.getElementById("authToggleBtn");
-if(authMode==="signup"){username.style.display="block";mainBtn.textContent="Create Account";toggleBtn.textContent="Already have an account? Sign In";}else{username.style.display="none";mainBtn.textContent="Sign In";toggleBtn.textContent="Don't have an account? Create Account";}
-}
-function showAuthMessage(message,error=false){
-const box=document.getElementById("authMessage");
-if(!box)return;
-box.textContent=message;
-box.style.color=error?"#ff6b6b":"#7CFF9B";
-}
-async function ensureProfile(user,username){
-const {data:existing,error:selectError}=await supabaseClient.from("profiles").select("id,username,friend_code").eq("id",user.id).maybeSingle();
-if(selectError)throw selectError;
-if(existing)return existing;
-const friendCode="FS"+crypto.randomUUID().replace(/-/g,"").substring(0,8).toUpperCase();
-const {data:profile,error}=await supabaseClient.from("profiles").insert({id:user.id,username:username,friend_code:friendCode}).select().single();
-if(error)throw error;
-return profile;
-}
-async function handleAuth(){
-const email=document.getElementById("authEmail").value.trim();
-const password=document.getElementById("authPassword").value;
-const username=document.getElementById("authUsername").value.trim();
-if(!email||!password){
-showAuthMessage("Please enter email and password.",true);
-return;
-}
-if(authMode==="signup"&&!username){
-showAuthMessage("Please enter a username.",true);
-return;
-}
-if(password.length<6){
-showAuthMessage("Password must be at least 6 characters.",true);
-return;
-}
-const mainBtn=document.getElementById("authMainBtn");
-mainBtn.disabled=true;
-showAuthMessage("Please wait...");
-try{
-if(authMode==="signup"){
-const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
-if(error)throw error;
-if(!authData.user)throw new Error("Account could not be created.");
-if(authData.session){
-await ensureProfile(authData.user,username);
-showAuthMessage("Account created successfully!");
-await checkAuth();
-}else{
-showAuthMessage("Account created. Please sign in to continue.");
-}
-}else{
-const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
-if(error)throw error;
-if(!authData.user)throw new Error("Sign in failed.");
-await ensureProfile(authData.user,username||"User");
-showAuthMessage("Signed in successfully!");
-await checkAuth();
-}
-}catch(error){
-console.error("FitSync authentication error:",error);
-showAuthMessage(error.message||"Authentication failed.",true);
-}finally{
-mainBtn.disabled=false;
-}
-}
+let data={foods:[],calories:0,protein:0,fiber:0,steps:0,exercise:0,sleep:0,currentWeight:null,goalWeight:null,startWeight:null,calorieTarget:null,proteinTarget:null,friendCode:null,connectedFriend:null};
+function loadData(){const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{data={...data,...JSON.parse(stored)};}catch(e){console.error("FitSync data load error:",e);}}}
+function saveData(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
+function showPage(pageId,button){document.querySelectorAll(".page").forEach(page=>{page.classList.remove("active");});const page=document.getElementById(pageId);if(page){page.classList.add("active");}document.querySelectorAll(".nav-item").forEach(item=>{item.classList.remove("active");});if(button){button.classList.add("active");}window.scrollTo({top:0,behavior:"smooth"});}
+function addMessage(text,type){const chat=document.getElementById("foodChat");if(!chat)return;const message=document.createElement("div");message.className="msg "+type;message.innerHTML=text;chat.appendChild(message);chat.scrollTop=chat.scrollHeight;}
+async function analyzeFood(){const input=document.getElementById("foodInput");const text=input.value.trim();if(!text)return;addMessage(text,"me");input.value="";const loadingId="ai-loading-"+Date.now();addMessage(`<span id="${loadingId}">🤖 Analyzing your food with FitSync AI...</span>`,"bot");try{const response=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({food:text})});const dataFromAI=await response.json();const loading=document.getElementById(loadingId);if(loading){const parent=loading.closest(".msg");if(parent)parent.remove();}if(!response.ok||!dataFromAI.success){throw new Error(dataFromAI.error||"AI analysis failed");}const result=dataFromAI.result||{};const food={name:result.food||text,quantity:result.quantity||"1 serving",calories:Number(result.calories)||0,protein:Number(result.protein_g)||0,fiber:Number(result.fiber_g)||0,confidence:result.confidence||"medium",note:result.note||""};data.foods.push(food);data.calories=data.foods.reduce((sum,item)=>sum+(Number(item.calories)||0),0);data.protein=data.foods.reduce((sum,item)=>sum+(Number(item.protein)||0),0);data.fiber=data.foods.reduce((sum,item)=>sum+(Number(item.fiber)||0),0);saveData();updateUI();addMessage(`<strong>${escapeHTML(food.name)}</strong><br>Quantity: ${escapeHTML(food.quantity)}<br>🔥 ${Math.round(food.calories)} kcal &nbsp; 💪 ${food.protein.toFixed(1)}g protein &nbsp; 🌾 ${food.fiber.toFixed(1)}g fiber${food.note?`<br><span class="small-note">${escapeHTML(food.note)}</span>`:""}`,"bot");}catch(error){const loading=document.getElementById(loadingId);if(loading){const parent=loading.closest(".msg");if(parent)parent.remove();}addMessage("Sorry, I couldn't analyze that food. Please try again.","bot");console.error("Food AI error:",error);}}
+function updateUI(){updateDashboard();updateFoodHistory();updateActivityUI();updateGoalUI();updateScore();updateSmartAdvisor();updateFriendUI();updateWeeklyUI();}
+function updateDashboard(){const caloriesEl=document.getElementById("dashCalories");const proteinEl=document.getElementById("dashProtein");const stepsEl=document.getElementById("dashSteps");const exerciseEl=document.getElementById("dashExercise");const sleepEl=document.getElementById("dashSleep");if(caloriesEl)caloriesEl.textContent=Math.round(data.calories||0);if(proteinEl)proteinEl.textContent=(Number(data.protein)||0).toFixed(1)+" g";if(stepsEl)stepsEl.textContent=Number(data.steps)||0;if(exerciseEl)exerciseEl.textContent=(Number(data.exercise)||0)+" min";if(sleepEl)sleepEl.textContent=(Number(data.sleep)||0)+" h";const greeting=document.getElementById("dashboardGreeting");if(greeting){const hour=new Date().getHours();greeting.textContent=hour<12?"Good morning!":hour<18?"Good afternoon!":"Good evening!";}}
+function updateActivityUI(){const stepsInput=document.getElementById("stepsInput");const exerciseInput=document.getElementById("exerciseInput");const sleepInput=document.getElementById("sleepInput");if(stepsInput)stepsInput.value=data.steps||"";if(exerciseInput)exerciseInput.value=data.exercise||"";if(sleepInput)sleepInput.value=data.sleep||"";}
+function saveActivity(){const steps=document.getElementById("stepsInput");const exercise=document.getElementById("exerciseInput");const sleep=document.getElementById("sleepInput");data.steps=Math.max(0,Number(steps?.value)||0);data.exercise=Math.max(0,Number(exercise?.value)||0);data.sleep=Math.max(0,Number(sleep?.value)||0);saveData();updateUI();toast("Activity saved ✓");}
+function updateGoalUI(){const current=document.getElementById("currentWeight");const goal=document.getElementById("goalWeight");const targetCalories=document.getElementById("targetCalories");const targetProtein=document.getElementById("targetProtein");if(current)current.value=data.currentWeight||"";if(goal)goal.value=data.goalWeight||"";if(targetCalories)targetCalories.textContent=data.calorieTarget?Math.round(data.calorieTarget):"—";if(targetProtein)targetProtein.textContent=data.proteinTarget?(Number(data.proteinTarget).toFixed(0)+" g"):"—";const currentWeightEl=document.getElementById("currentWeightValue");const goalWeightEl=document.getElementById("goalWeightValue");if(currentWeightEl)currentWeightEl.textContent=data.currentWeight?Number(data.currentWeight).toFixed(1)+" kg":"—";if(goalWeightEl)goalWeightEl.textContent=data.goalWeight?Number(data.goalWeight).toFixed(1)+" kg":"—";const progress=document.getElementById("goalProgress");if(progress){let ratio=0;if(data.currentWeight&&data.goalWeight){const start=Number(data.startWeight)||Number(data.currentWeight);const currentValue=Number(data.currentWeight);const target=Number(data.goalWeight);const total=Math.abs(start-target);const remaining=Math.abs(currentValue-target);ratio=total>0?(1-Math.min(remaining/total,1)):0;if(start===target)ratio=1;}progress.style.width=Math.max(0,Math.min(100,ratio*100))+"%";}}
+function calculateGoals(){const current=Number(document.getElementById("currentWeight")?.value)||0;const goal=Number(document.getElementById("goalWeight")?.value)||0;if(current<=0||goal<=0){toast("Enter valid current and goal weight");return;}if(!data.startWeight){data.startWeight=current;}data.currentWeight=current;data.goalWeight=goal;let calories=current*30;if(goal<current){calories-=300;}else if(goal>current){calories+=250;}data.calorieTarget=Math.max(1200,Math.round(calories));data.proteinTarget=Math.round(current*1.6);saveData();updateUI();toast("Your targets are ready ✓");}
+function saveStartWeight(){const input=document.getElementById("startWeightInput");const value=Number(input?.value)||0;if(value<=0){toast("Enter a valid starting weight");return;}data.startWeight=value;if(!data.currentWeight){data.currentWeight=value;}saveData();updateUI();toast("Starting weight saved ✓");}
+function updateFoodHistory(){const list=document.getElementById("foodList");if(!list)return;if(!data.foods||data.foods.length===0){list.innerHTML='<div class="empty">No foods logged today.<br>Tell FitSync what you ate to see it here.</div>';return;}let html="";data.foods.forEach((item,idx)=>{html+=`<div class="food-item"><div class="food-main"><div class="food-name">${escapeHTML(item.name||"Unknown")}</div><div class="food-quantity">${escapeHTML(item.quantity||"1 serving")}${item.confidence?` • ${item.confidence} confidence`:""}</div></div><div class="food-nutrition"><div class="food-cal">${Math.round(item.calories||0)} kcal</div><div class="food-protein">${(Number(item.protein)||0).toFixed(1)}g protein</div></div></div>`;});list.innerHTML=html;}
+function updateScore(){const scoreEl=document.getElementById("dashScore");if(!scoreEl)return;const score=calculateScore();scoreEl.textContent=score;}
+function calculateScore(){let score=0;if(data.calorieTarget&&data.calories){const ratio=data.calories/data.calorieTarget;if(ratio>=0.8&&ratio<=1.2)score+=35;else if(ratio>=0.6&&ratio<=1.4)score+=20;else score+=10;}if(data.proteinTarget&&data.protein){const ratio=data.protein/data.proteinTarget;if(ratio>=0.8&&ratio<=1.2)score+=25;else if(ratio>=0.6&&ratio<=1.4)score+=15;else score+=8;}if(data.steps){if(data.steps>=8000)score+=25;else if(data.steps>=5000)score+=15;else if(data.steps>=3000)score+=8;else score+=3;}if(data.sleep){if(data.sleep>=7&&data.sleep<=9)score+=15;else if(data.sleep>=6&&data.sleep<=10)score+=10;else score+=5;}return Math.min(100,Math.round(score));}
+function updateSmartAdvisor(){const advisor=document.getElementById("smartAdvisor");if(!advisor)return;const tips=[];if(!data.calorieTarget){tips.push("Set your weight goals to get calorie and protein targets.");}if(data.calorieTarget&&data.calories){const ratio=data.calories/data.calorieTarget;if(ratio>1.2)tips.push(`You're above your calorie target. Consider lighter meals or more movement.`);else if(ratio<0.8)tips.push(`You're below your calorie target. Make sure you're eating enough.`);}if(data.proteinTarget&&data.protein){const ratio=data.protein/data.proteinTarget;if(ratio<0.8)tips.push(`Increase protein intake to support your goals.`);}if(data.steps<3000){tips.push("Add a short walk to boost your daily steps.");}if(data.sleep&&data.sleep<6){tips.push("Try to get 7–9 hours of sleep for better recovery.");}if(tips.length===0){tips.push("Great job! Keep tracking consistently for best results.");}advisor.textContent=tips.join(" ");}
+async function connectFriend(){const code=document.getElementById("friendCodeInput")?.value.trim();if(!code){toast("Enter a friend code");return;}try{const {data:friendProfile,error}=await supabaseClient.from("profiles").select("id,username,friend_code").eq("friend_code",code).maybeSingle();if(error)throw error;if(!friendProfile||friendProfile.friend_code===data.friendCode){toast("Invalid or self code");return;}data.connectedFriend={id:friendProfile.id,username:friendProfile.username,friendCode:friendProfile.friend_code};saveData();updateFriendUI();toast("Friend connected ✓");document.getElementById("friendCodeInput").value="";}catch(error){console.error("Friend connect error:",error);toast("Could not connect friend");}}
+function updateFriendUI(){const nameEl=document.getElementById("friendName");const statusEl=document.getElementById("friendStatus");const avatarEl=document.getElementById("friendAvatar");const cmpYou=document.getElementById("cmpStepsYou");const cmpFriend=document.getElementById("cmpStepsFriend");if(data.connectedFriend){if(nameEl)nameEl.textContent=data.connectedFriend.username||"Friend";if(statusEl)statusEl.textContent="Connected";if(avatarEl){const first=(data.connectedFriend.username||"F")[0].toUpperCase();avatarEl.textContent=first;}if(cmpYou)cmpYou.textContent=Number(data.steps)||0;if(cmpFriend)cmpFriend.textContent=Math.floor((Number(data.steps)||0)*(0.8+Math.random()*0.4));}else{if(nameEl)nameEl.textContent="Not connected";if(statusEl)statusEl.textContent="Add a friend to compare progress.";if(avatarEl)avatarEl.textContent="?";if(cmpYou)cmpYou.textContent="0";if(cmpFriend)cmpFriend.textContent="0";}}
+function updateWeeklyUI(){renderWeeklyResult();}
+function renderWeeklyResult(){const box=document.getElementById("weeklyResult");if(!box)return;const today=new Date();const day=today.getDay();if(day===0){const score=calculateScore();box.innerHTML=`<div class="card"><h3>🏆 Sunday Result</h3><div class="big-number">${score}/100</div><p>This week's current result is based on your nutrition, steps, exercise and sleep.</p><button onclick="showPage('homePage')">Back to Home</button></div>`;}else{box.innerHTML=`<div class="card"><h3>📅 Weekly Result</h3><p>Your weekly result will be shown on Sunday.</p><p>Keep tracking your food, steps, exercise and sleep every day.</p></div>`;}}
+function escapeHTML(str){if(!str)return"";return String(str).split("").map(char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]||char)).join("");}
+function toast(msg){const toastEl=document.getElementById("toast");if(!toastEl)return;toastEl.textContent=msg;toastEl.classList.add("show");setTimeout(()=>{toastEl.classList.remove("show");},2200);}
+function logout(){if(confirm("Logout from FitSync?")){localStorage.removeItem(STORAGE_KEY);window.location.reload();}}
+function showAuthMode(mode){authMode=mode;const loginTab=document.getElementById("loginTab");const signupTab=document.getElementById("signupTab");const signupFields=document.getElementById("signupFields");if(mode==="signup"){loginTab.classList.remove("active");signupTab.classList.add("active");signupFields.style.display="block";}else{loginTab.classList.add("active");signupTab.classList.remove("active");signupFields.style.display="none";}showAuthMessage("");}
+function toggleAuthMode(){showAuthMode(authMode==="login"?"signup":"login");}
+function showAuthMessage(message,error=false){const box=document.getElementById("authMessage");if(!box)return;box.textContent=message;box.style.color=error?"#ff6b6b":"#7CFF9B";}
+async function ensureProfile(user,username){const {data:existing,error:selectError}=await supabaseClient.from("profiles").select("id,username,friend_code").eq("id",user.id).maybeSingle();if(selectError)throw selectError;if(existing)return existing;const friendCode="FS"+crypto.randomUUID().replace(/-/g,"").substring(0,8).toUpperCase();const {data:profile,error}=await supabaseClient.from("profiles").insert({id:user.id,username:username,friend_code:friendCode}).select().single();if(error)throw error;return profile;}
+async function handleAuth(){const email=document.getElementById("authEmail").value.trim();const password=document.getElementById("authPassword").value;const username=document.getElementById("signupUsername")?.value.trim()||"";if(!email||!password){showAuthMessage("Please enter email and password.");return;}if(authMode==="signup"&&!username){showAuthMessage("Please enter a username.");return;}if(password.length<6){showAuthMessage("Password must be at least 6 characters.");return;}const mainBtn=document.getElementById("authMainBtn");mainBtn.disabled=true;showAuthMessage("Please wait...");try{if(authMode==="signup"){const {data:authData,error}=await supabaseClient.auth.signUp({email,password});if(error)throw error;if(!authData.user)throw new Error("Account could not be created.");if(authData.session){await ensureProfile(authData.user,username);showAuthMessage("Account created successfully!");await checkAuth();}else{showAuthMessage("Account created. Please sign in to continue.");}}else{const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;if(!authData.user)throw new Error("Sign in failed.");await ensureProfile(authData.user,username||"User");showAuthMessage("Signed in successfully!");await checkAuth();}}catch(error){console.error("FitSync authentication error:",error);showAuthMessage(error.message||"Authentication failed.",true);}finally{mainBtn.disabled=false;}}
 async function checkAuth(){
 try{
 const {data:sessionData,error}=await supabaseClient.auth.getSession();
@@ -1427,6 +509,14 @@ if(sessionData.session){
 authScreen.style.display="none";
 loadData();
 updateUI();
+// Load profile data
+const {data:profile}=await supabaseClient.from("profiles").select("username,friend_code").eq("id",sessionData.session.user.id).maybeSingle();
+if(profile){
+document.getElementById("profileEmail").textContent=sessionData.session.user.email||"—";
+document.getElementById("profileFriendCode").textContent=profile.friend_code||"Generating...";
+data.friendCode=profile.friend_code;
+saveData();
+}
 }else{
 authScreen.style.display="flex";
 }
@@ -1436,19 +526,8 @@ document.getElementById("authScreen").style.display="flex";
 showAuthMessage(error.message||"Could not check login status.",true);
 }
 }
-supabaseClient.auth.onAuthStateChange((event,session)=>{
-const authScreen=document.getElementById("authScreen");
-if(session){
-authScreen.style.display="none";
-loadData();
-updateUI();
-}else{
-authScreen.style.display="flex";
-}
-});
+supabaseClient.auth.onAuthStateChange((event,session)=>{const authScreen=document.getElementById("authScreen");if(session){authScreen.style.display="none";loadData();updateUI();}else{authScreen.style.display="flex";}});
 checkAuth();
 </script>
 </body>
 </html>
-
-  
