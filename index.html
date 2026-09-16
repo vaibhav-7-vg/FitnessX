@@ -548,14 +548,13 @@ return null;
 profileData=created;
 return created;
 }
-async function handleAuth(){
+  async function handleAuth(){
   const email=document.getElementById("authEmail").value.trim();
   const password=document.getElementById("authPassword").value;
   const username=document.getElementById("authUsername")?.value.trim()||"";
   
-  // Debug: Check if Supabase is loaded
   if(typeof supabase === 'undefined'){
-    alert("ERROR: Supabase not loaded! Check internet connection.");
+    alert("ERROR: Supabase not loaded!");
     return;
   }
   
@@ -571,7 +570,7 @@ async function handleAuth(){
   }
   if(password.length<6){
     setAuthMessage("Password must be at least 6 characters.");
-    alert("Password too short (min 6 characters)");
+    alert("Password too short");
     return;
   }
   
@@ -581,46 +580,32 @@ async function handleAuth(){
   
   try{
     if(authMode==="signup"){
-      alert("Trying to sign up... Email: "+email);
+      alert("Signing up with: "+email);
       const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
-      
       if(error){
-        alert("Sign up ERROR: "+error.message);
+        alert("ERROR: "+error.message);
         throw error;
-      }
-      if(!authData.user){
-        alert("ERROR: Account could not be created");
-        throw new Error("Account could not be created.");
       }
       if(authData.session){
         await ensureProfile(authData.user,username);
-        setAuthMessage("Account created successfully!");
         alert("SUCCESS! Account created.");
         await checkAuth();
       }else{
-        setAuthMessage("Account created. Please sign in to continue.");
-        alert("Account created. Check your email to confirm.");
+        alert("Account created. Check email.");
       }
     }else{
-      alert("Trying to sign in... Email: "+email);
+      alert("Signing in with: "+email);
       const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
-      
       if(error){
-        alert("Sign in ERROR: "+error.message);
+        alert("ERROR: "+error.message);
         throw error;
       }
-      if(!authData.user){
-        alert("ERROR: Sign in failed");
-        throw new Error("Sign in failed.");
-      }
       await ensureProfile(authData.user,username||"User");
-      setAuthMessage("Signed in successfully!");
       alert("SUCCESS! Signed in.");
       await checkAuth();
     }
   }catch(error){
-    console.error("FitSync authentication error:",error);
-    alert("CAUGHT ERROR: "+(error.message||"Unknown error"));
+    alert("ERROR: "+error.message);
     setAuthMessage(error.message||"Authentication failed.");
   }finally{
     mainBtn.disabled=false;
