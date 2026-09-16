@@ -1,33 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta name="theme-color" content="#0b100d">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-<title>FitSync</title>
+<meta
+  name="theme-color"
+  content="#07100b"
+>
+
+<meta
+  name="description"
+  content="FitSync — Track yourself. Improve together."
+>
+
+<title>FitSync — Track yourself. Improve together.</title>
 
 <style>
 
-/* =========================
-   GLOBAL
-========================= */
+/* =====================================================
+   FITSYNC
+   PART 1 — MAIN HTML + CSS
+===================================================== */
 
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-  margin:0;
-  background:#090e0b;
-  color:#f4f7f5;
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  background:#07100b;
+  color:#f4fff7;
+
+  min-height:100vh;
+
+  overflow-x:hidden;
 }
 
 button,
 input,
-select{
+select,
+textarea{
   font:inherit;
 }
 
@@ -35,3003 +66,3062 @@ button{
   cursor:pointer;
 }
 
-.app{
-  max-width:600px;
-  margin:auto;
-  min-height:100vh;
-  padding-bottom:85px;
+input,
+textarea{
+  outline:none;
 }
 
+/* =====================================================
+   APP CONTAINER
+===================================================== */
 
-/* =========================
-   HEADER
-========================= */
+.app{
+  width:100%;
+  max-width:520px;
+  min-height:100vh;
+  margin:0 auto;
 
-header{
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(56,189,110,.08),
+      transparent 35%
+    ),
+    #07100b;
+
+  position:relative;
+
+  padding-bottom:90px;
+}
+
+/* =====================================================
+   TOP HEADER
+===================================================== */
+
+.topbar{
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:50;
 
-  padding:20px 18px 16px;
+  padding:
+    calc(16px + env(safe-area-inset-top))
+    18px
+    14px;
+
+  background:rgba(7,16,11,.92);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border-bottom:1px solid rgba(255,255,255,.06);
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-icon{
+  width:40px;
+  height:40px;
+
+  border-radius:13px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   background:
     linear-gradient(
-      180deg,
-      #17231b 0%,
-      #0c120e 100%
+      135deg,
+      #35e878,
+      #159447
     );
 
-  border-bottom:1px solid #243129;
-}
+  color:#031008;
 
-.logo{
-  font-size:28px;
+  font-size:21px;
   font-weight:900;
+
+  box-shadow:
+    0 8px 25px rgba(53,232,120,.18);
 }
 
-.logo span{
-  color:#69e28b;
+.brand-text{
+  display:flex;
+  flex-direction:column;
 }
 
-.tagline{
-  color:#8c9c92;
-  font-size:12px;
-  margin-top:4px;
+.brand-name{
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:-.4px;
 }
 
+.brand-tagline{
+  font-size:10px;
+  color:#91a59a;
+  margin-top:2px;
+}
 
-/* =========================
-   PAGES
-========================= */
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+main{
+  padding:18px;
+}
 
 .page{
   display:none;
-  padding:16px;
+  animation:pageIn .25s ease;
 }
 
 .page.active{
   display:block;
 }
 
-h2{
-  margin:4px 0 15px;
-  font-size:23px;
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-h3{
-  margin:0 0 12px;
+/* =====================================================
+   HEADINGS
+===================================================== */
+
+.page-title{
+  font-size:27px;
+  font-weight:850;
+  letter-spacing:-.8px;
+
+  margin-bottom:5px;
 }
 
+.page-subtitle{
+  color:#82958a;
+  font-size:13px;
 
-/* =========================
+  line-height:1.5;
+
+  margin-bottom:20px;
+}
+
+/* =====================================================
    CARDS
-========================= */
+===================================================== */
 
 .card{
-  background:#131a15;
-  border:1px solid #26332b;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:13px;
-}
-
-.muted{
-  color:#8c9a91;
-  font-size:13px;
-}
-
-
-/* =========================
-   DAILY SCORE
-========================= */
-
-.score-card{
-  text-align:center;
-
   background:
     linear-gradient(
-      135deg,
-      #173d27,
-      #102117
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.018)
     );
-}
 
-.score-label{
-  color:#a9b7ae;
-  font-size:12px;
-  letter-spacing:.5px;
-}
+  border:1px solid rgba(255,255,255,.065);
 
-.score{
-  font-size:58px;
-  font-weight:900;
-  color:#70e993;
-  margin:5px 0;
-}
-
-
-/* =========================
-   GRID
-========================= */
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.stat{
-  background:#0e1410;
-  border-radius:14px;
-  padding:14px;
-}
-
-.stat small{
-  color:#8b9990;
-  font-size:12px;
-}
-
-.stat b{
-  display:block;
-  font-size:21px;
-  margin-top:5px;
-}
-
-
-/* =========================
-   PROGRESS
-========================= */
-
-.progress{
-  height:8px;
-  background:#28332c;
   border-radius:20px;
-  overflow:hidden;
+
+  padding:17px;
+
+  margin-bottom:14px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.14);
 }
 
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:#69e28b;
-  border-radius:20px;
-  transition:.3s;
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-.btn{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  padding:13px;
-  background:#69e28b;
-  color:#07100a;
-  font-weight:800;
-}
-
-.btn.secondary{
-  background:#202b24;
-  color:white;
-}
-
-
-/* =========================
-   INPUT
-========================= */
-
-label{
-  display:block;
-  color:#aebbb3;
-  font-size:12px;
-  margin-top:9px;
-}
-
-input,
-select{
-  width:100%;
-  padding:13px;
-
-  margin:6px 0 10px;
-
-  border-radius:12px;
-  border:1px solid #344238;
-
-  background:#0c120e;
-  color:white;
-
-  outline:none;
-}
-
-input:focus,
-select:focus{
-  border-color:#69e28b;
-}
-
-
-/* =========================
-   FOOD CHAT
-========================= */
-
-.chat{
-  height:350px;
-  overflow-y:auto;
-
-  background:#0b110d;
-
-  border-radius:14px;
-
-  padding:7px;
-
-  margin-bottom:10px;
-}
-
-.msg{
-  max-width:88%;
-
-  padding:11px 13px;
-
-  border-radius:15px;
-
-  margin:8px 0;
-
+.card-title{
   font-size:14px;
-  line-height:1.5;
-}
-
-.bot{
-  background:#202b24;
-  border-bottom-left-radius:4px;
-}
-
-.me{
-  background:#316b40;
-  margin-left:auto;
-  border-bottom-right-radius:4px;
-}
-
-.chat-row{
-  display:flex;
-  gap:7px;
-}
-
-.chat-row input{
-  margin:0;
-}
-
-.chat-row button{
-  width:85px;
-
-  border:0;
-
-  border-radius:12px;
-
-  background:#69e28b;
-
-  color:#07100a;
-
-  font-weight:800;
-}
-
-
-/* =========================
-   FOOD HISTORY
-========================= */
-
-.food-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  padding:12px 0;
-
-  border-bottom:1px solid #263129;
-}
-
-.food-item:last-child{
-  border-bottom:0;
-}
-
-
-/* =========================
-   ADVISOR
-========================= */
-
-.advisor-main{
-  background:
-    linear-gradient(
-      135deg,
-      #172c1e,
-      #101812
-    );
-
-  border:1px solid #34523d;
-}
-
-.advisor-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  font-size:18px;
-  font-weight:800;
+  font-weight:750;
 
   margin-bottom:12px;
 }
 
-.advice{
-  background:#0d1410;
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  border-radius:13px;
-
-  padding:12px;
-
-  margin-top:8px;
-
-  line-height:1.5;
-
-  font-size:13px;
+  margin-bottom:13px;
 }
 
+/* =====================================================
+   HERO / DAILY SCORE
+===================================================== */
 
-/* =========================
-   FRIEND
-========================= */
+.hero{
+  padding:20px;
 
-.compare{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+  border-radius:24px;
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(53,232,120,.18),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(40,150,80,.16),
+      rgba(255,255,255,.025)
+    );
+
+  border:1px solid rgba(53,232,120,.14);
+
+  margin-bottom:14px;
 }
 
-.person{
-  background:#0e1410;
-
-  border-radius:15px;
-
-  padding:15px;
-
-  text-align:center;
+.hero-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
 }
 
-.avatar{
-  width:55px;
-  height:55px;
+.hero-label{
+  color:#92a59a;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.hero-title{
+  font-size:21px;
+  font-weight:800;
+}
+
+.score{
+  width:72px;
+  height:72px;
 
   border-radius:50%;
 
-  display:grid;
-  place-items:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 
-  background:#26382c;
+  background:
+    radial-gradient(
+      circle,
+      rgba(53,232,120,.18),
+      rgba(53,232,120,.04)
+    );
 
-  margin:0 auto 8px;
+  border:2px solid rgba(53,232,120,.4);
 
-  font-size:25px;
+  box-shadow:
+    0 0 30px rgba(53,232,120,.10);
 }
 
-.badge{
-  display:inline-block;
+.score-number{
+  font-size:25px;
+  line-height:1;
+  font-weight:900;
+}
 
-  background:#203c29;
+.score-small{
+  font-size:9px;
+  color:#91a59a;
+  margin-top:4px;
+}
 
-  color:#70e993;
+/* =====================================================
+   STAT GRID
+===================================================== */
 
-  padding:6px 10px;
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.stat-card{
+  padding:15px;
+
+  border-radius:17px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.055);
+}
+
+.stat-icon{
+  font-size:18px;
+  margin-bottom:9px;
+}
+
+.stat-value{
+  font-size:21px;
+  font-weight:850;
+}
+
+.stat-label{
+  color:#7f9187;
+  font-size:11px;
+  margin-top:3px;
+}
+
+/* =====================================================
+   THREE COLUMN STATS
+===================================================== */
+
+.mini-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.mini-card{
+  padding:13px 10px;
+
+  border-radius:15px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.05);
+
+  text-align:center;
+}
+
+.mini-value{
+  font-size:17px;
+  font-weight:800;
+}
+
+.mini-label{
+  font-size:9px;
+  color:#7f9187;
+  margin-top:4px;
+}
+
+/* =====================================================
+   PROGRESS BARS
+===================================================== */
+
+.progress-row{
+  margin-bottom:15px;
+}
+
+.progress-row:last-child{
+  margin-bottom:0;
+}
+
+.progress-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  font-size:12px;
+
+  margin-bottom:7px;
+}
+
+.progress-name{
+  color:#aebdb4;
+}
+
+.progress-number{
+  color:#f1fff5;
+  font-weight:700;
+}
+
+.progress-track{
+  width:100%;
+  height:8px;
 
   border-radius:20px;
 
+  background:rgba(255,255,255,.07);
+
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #24c968,
+      #69f39a
+    );
+
+  transition:
+    width .5s ease;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+  width:100%;
+
+  border:none;
+
+  border-radius:14px;
+
+  padding:13px 16px;
+
+  font-weight:750;
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
+
+.btn:active{
+  transform:scale(.97);
+}
+
+.btn-primary{
+  background:
+    linear-gradient(
+      135deg,
+      #35e878,
+      #20b95c
+    );
+
+  color:#031008;
+
+  box-shadow:
+    0 8px 22px rgba(53,232,120,.14);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.055);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  color:#ecfff2;
+}
+
+.btn-danger{
+  background:rgba(239,68,68,.10);
+
+  border:1px solid rgba(239,68,68,.18);
+
+  color:#ff9b9b;
+}
+
+.btn-small{
+  width:auto;
+  padding:8px 11px;
   font-size:11px;
+  border-radius:10px;
 }
 
+/* =====================================================
+   INPUTS
+===================================================== */
 
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-  text-align:center;
-
-  color:#718078;
-
-  padding:25px 10px;
+.input-group{
+  margin-bottom:13px;
 }
 
-
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.nav{
-  position:fixed;
-
-  bottom:0;
-  left:0;
-  right:0;
-
-  max-width:600px;
-
-  height:72px;
-
-  margin:auto;
-
-  background:#101611;
-
-  border-top:1px solid #27322b;
-
-  display:flex;
-
-  z-index:50;
-}
-
-.nav button{
-  flex:1;
-
-  border:0;
-
-  background:none;
-
-  color:#7f8d84;
-
-  font-size:10px;
-}
-
-.nav button.active{
-  color:#69e28b;
-}
-
-.nav-icon{
+.input-label{
   display:block;
 
-  font-size:20px;
+  font-size:11px;
 
-  margin-bottom:4px;
+  color:#91a198;
+
+  margin-bottom:7px;
 }
 
-</style>
-</head>
+.input{
+  width:100%;
 
+  border:none;
+  outline:none;
 
-<body>
+  padding:13px 14px;
 
-<div class="app">
+  border-radius:13px;
 
+  background:#0d1811;
 
-<!-- =========================
-     HEADER
-========================= -->
+  border:1px solid rgba(255,255,255,.07);
 
-<header>
+  color:#f4fff7;
 
-  <div class="logo">
-    Fit<span>Sync</span> 💪
-  </div>
-
-  <div class="tagline">
-    Track yourself. Improve together.
-  </div>
-
-</header>
-
-
-
-<!-- =========================
-     HOME
-========================= -->
-
-<section id="home" class="page active">
-
-  <h2>Today's Overview</h2>
-
-
-  <!-- SCORE -->
-
-  <div class="card score-card">
-
-    <div class="score-label">
-      HOW GOOD WAS YOUR DAY?
-    </div>
-
-    <div class="score" id="score">
-      0
-    </div>
-
-    <div class="muted">
-      Daily Fitness Score
-    </div>
-
-  </div>
-
-
-
-  <!-- NUTRITION -->
-
-  <div class="card">
-
-    <h3>🍱 Nutrition</h3>
-
-    <div class="grid">
-
-      <div class="stat">
-
-        <small>Calories</small>
-
-        <b>
-          <span id="homeCalories">0</span>
-        </b>
-
-        <small>
-          / <span id="targetCalories">2200</span> kcal
-        </small>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Protein</small>
-
-        <b>
-          <span id="homeProtein">0</span>g
-        </b>
-
-        <small>
-          / <span id="targetProtein">120</span>g
-        </small>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Fiber</small>
-
-        <b>
-          <span id="homeFiber">0</span>g
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Food Items</small>
-
-        <b id="homeFoodCount">
-          0
-        </b>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- ACTIVITY -->
-
-  <div class="card">
-
-    <h3>🏃 Activity</h3>
-
-    <div class="grid">
-
-      <div class="stat">
-
-        <small>Steps</small>
-
-        <b id="homeSteps">
-          0
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Exercise</small>
-
-        <b>
-          <span id="homeExercise">0</span>
-          min
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Sleep</small>
-
-        <b>
-          <span id="homeSleep">0</span>
-          h
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>Goal Weight</small>
-
-        <b id="homeGoalWeight">
-          —
-        </b>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =========================
-       SMART ADVISOR
-  ========================= -->
-
-  <div class="card advisor-main">
-
-    <div class="advisor-title">
-      🧠 Smart Daily Advisor
-    </div>
-
-    <div id="advisorContent">
-
-      <div class="muted">
-        Analyzing your day...
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- PROGRESS -->
-
-  <div class="card">
-
-    <h3>📈 Today's Nutrition Progress</h3>
-
-    <div class="muted">
-      Calories
-    </div>
-
-    <div class="progress">
-      <div
-        class="progress-bar"
-        id="calorieProgress">
-      </div>
-    </div>
-
-    <br>
-
-    <div class="muted">
-      Protein
-    </div>
-
-    <div class="progress">
-      <div
-        class="progress-bar"
-        id="proteinProgress">
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     FOOD
-========================= -->
-
-<section id="food" class="page">
-
-  <h2>🍱 Food Assistant</h2>
-
-
-  <div class="card">
-
-    <div class="chat" id="chat">
-
-      <div class="msg bot">
-
-        👋 <b>Hi!</b><br><br>
-
-        Tell me what you ate and I'll estimate your nutrition.
-
-        <br><br>
-
-        Example:
-
-        <br>
-
-        “I ate 2 chapatis with dal and 1 banana”
-
-        <br><br>
-
-        I'll calculate calories, protein and fiber.
-
-      </div>
-
-    </div>
-
-
-    <div class="chat-row">
-
-      <input
-        id="foodInput"
-        type="text"
-        placeholder="What did you eat?"
-      >
-
-      <button onclick="analyzeFood()">
-        Send
-      </button>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>Today's Food</h3>
-
-    <div id="foodHistory"></div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     ACTIVITY
-========================= -->
-
-<section id="activity" class="page">
-
-  <h2>🏃 Activity</h2>
-
-
-  <div class="card">
-
-    <h3>Today's Activity</h3>
-
-
-    <label>
-      Steps
-    </label>
-
-    <input
-      id="stepsInput"
-      type="number"
-      min="0"
-      placeholder="Example: 8000"
-    >
-
-
-    <label>
-      Exercise minutes
-    </label>
-
-    <input
-      id="exerciseInput"
-      type="number"
-      min="0"
-      placeholder="Example: 30"
-    >
-
-
-    <label>
-      Sleep hours
-    </label>
-
-    <input
-      id="sleepInput"
-      type="number"
-      min="0"
-      max="24"
-      step="0.1"
-      placeholder="Example: 7.5"
-    >
-
-
-    <button
-      class="btn"
-      onclick="saveActivity()"
-    >
-      Save Activity
-    </button>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>🎯 Recommended Activity</h3>
-
-    <div class="grid">
-
-      <div class="stat">
-
-        <small>
-          Steps
-        </small>
-
-        <b>
-          8,000+
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>
-          Exercise
-        </small>
-
-        <b>
-          30+ min
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>
-          Sleep
-        </small>
-
-        <b>
-          7–9 h
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>
-          Movement
-        </small>
-
-        <b>
-          Daily
-        </b>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     FRIEND
-========================= -->
-
-<section id="friend" class="page">
-
-  <h2>👥 Friend</h2>
-
-
-  <div class="card">
-
-    <span class="badge">
-      FRIEND MODE
-    </span>
-
-    <h3 style="margin-top:12px">
-      Today's Comparison
-    </h3>
-
-
-    <div class="compare">
-
-      <div class="person">
-
-        <div class="avatar">
-          🧑
-        </div>
-
-        <b>
-          You
-        </b>
-
-        <h2 id="yourScore">
-          0
-        </h2>
-
-        <small class="muted">
-          Score
-        </small>
-
-      </div>
-
-
-      <div class="person">
-
-        <div class="avatar">
-          👤
-        </div>
-
-        <b>
-          Friend
-        </b>
-
-        <h2>
-          78
-        </h2>
-
-        <small class="muted">
-          Score
-        </small>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>
-      🚶 Steps
-    </h3>
-
-    <div class="grid">
-
-      <div class="stat">
-
-        <small>
-          Your Steps
-        </small>
-
-        <b id="friendSteps">
-          0
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>
-          Friend Steps
-        </small>
-
-        <b>
-          7,840
-        </b>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>
-      🔥 Streak
-    </h3>
-
-    <div style="font-size:35px;font-weight:900">
-      1 Day
-    </div>
-
-    <div class="muted">
-      Keep going!
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
-     PROGRESS
-========================= -->
-
-<section id="progress" class="page">
-
-  <h2>📊 Progress</h2>
-
-
-  <div class="card">
-
-    <h3>
-      🎯 Your Goals
-    </h3>
-
-
-    <label>
-      Current weight (kg)
-    </label>
-
-    <input
-      id="weightInput"
-      type="number"
-      step="0.1"
-      placeholder="Example: 75"
-    >
-
-
-    <label>
-      Goal weight (kg)
-    </label>
-
-    <input
-      id="goalWeightInput"
-      type="number"
-      step="0.1"
-      placeholder="Example: 68"
-    >
-
-
-    <label>
-      Daily calorie target
-    </label>
-
-    <input
-      id="calorieTargetInput"
-      type="number"
-      placeholder="Example: 2200"
-    >
-
-
-    <label>
-      Daily protein target (g)
-    </label>
-
-    <input
-      id="proteinTargetInput"
-      type="number"
-      placeholder="Example: 120"
-    >
-
-
-    <button
-      class="btn"
-      onclick="saveGoals()"
-    >
-      Save Goals
-    </button>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>
-      ⚖️ Weight
-    </h3>
-
-    <div class="grid">
-
-      <div class="stat">
-
-        <small>
-          Current
-        </small>
-
-        <b id="currentWeight">
-          —
-        </b>
-
-      </div>
-
-
-      <div class="stat">
-
-        <small>
-          Goal
-        </small>
-
-        <b id="goalWeight">
-          —
-        </b>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h3>
-      📅 Weekly Result
-    </h3>
-
-    <div class="stat">
-
-      <small>
-        Today's Score
-      </small>
-
-      <b id="weeklyScore">
-        0
-      </b>
-
-    </div>
-
-    <p class="muted">
-      Your weekly result will become more useful
-      after you record several days of data.
-    </p>
-
-  </div>
-
-</section>
-
-
-
-</div>
-
-
-
-<!-- =========================
-     NAVIGATION
-========================= -->
-
-<nav class="nav">
-
-  <button
-    class="active"
-    onclick="showPage('home',this)"
-  >
-
-    <span class="nav-icon">
-      🏠
-    </span>
-
-    Home
-
-  </button>
-
-
-  <button
-    onclick="showPage('food',this)"
-  >
-
-    <span class="nav-icon">
-      🍱
-    </span>
-
-    Food
-
-  </button>
-
-
-  <button
-    onclick="showPage('activity',this)"
-  >
-
-    <span class="nav-icon">
-      🏃
-    </span>
-
-    Activity
-
-  </button>
-
-
-  <button
-    onclick="showPage('friend',this)"
-  >
-
-    <span class="nav-icon">
-      👥
-    </span>
-
-    Friend
-
-  </button>
-
-
-  <button
-    onclick="showPage('progress',this)"
-  >
-
-    <span class="nav-icon">
-      📊
-    </span>
-
-    Progress
-
-  </button>
-
-</nav>
-
-
-
-<script>
-
-/* =====================================================
-   FITSYNC DATA
-===================================================== */
-
-let data =
-JSON.parse(
-  localStorage.getItem("fitsyncData")
-) ||
-{
-  calories:0,
-  protein:0,
-  fiber:0,
-
-  foods:[],
-
-  steps:0,
-  exercise:0,
-  sleep:0,
-
-  weight:"",
-  goalWeight:"",
-
-  calorieTarget:2200,
-  proteinTarget:120
-};
-
-
-
-function saveData(){
-
-  localStorage.setItem(
-    "fitsyncData",
-    JSON.stringify(data)
-  );
-
+  font-size:14px;
 }
 
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function showPage(id,button){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(page=>{
-      page.classList.remove("active");
-    });
-
-
-  document
-    .getElementById(id)
-    .classList.add("active");
-
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(btn=>{
-      btn.classList.remove("active");
-    });
-
-
-  if(button){
-    button.classList.add("active");
-  }
-
-
-  updateUI();
-
+.input::placeholder{
+  color:#52635a;
 }
 
-
-/* =====================================================
-   FOOD DATABASE
-===================================================== */
-
-const foods = {
-
-  tea:{
-    aliases:["tea","chai","chaha"],
-    cal:80,
-    protein:2,
-    fiber:0
-  },
-
-  coffee:{
-    aliases:["coffee","cafe"],
-    cal:70,
-    protein:2,
-    fiber:0
-  },
-
-  milk:{
-    aliases:["milk","dudh"],
-    cal:120,
-    protein:6,
-    fiber:0
-  },
-
-  egg:{
-    aliases:["egg","eggs","anda","ande"],
-    cal:70,
-    protein:6,
-    fiber:0
-  },
-
-  banana:{
-    aliases:["banana","kela","kele"],
-    cal:105,
-    protein:1.3,
-    fiber:3
-  },
-
-  apple:{
-    aliases:["apple","seb"],
-    cal:95,
-    protein:.5,
-    fiber:4
-  },
-
-  orange:{
-    aliases:["orange","santra"],
-    cal:65,
-    protein:1.2,
-    fiber:3
-  },
-
-  mango:{
-    aliases:["mango","aam"],
-    cal:135,
-    protein:1,
-    fiber:3
-  },
-
-  poha:{
-    aliases:["poha","pohe"],
-    cal:250,
-    protein:5,
-    fiber:3
-  },
-
-  upma:{
-    aliases:["upma","upama"],
-    cal:220,
-    protein:6,
-    fiber:3
-  },
-
-  idli:{
-    aliases:["idli","idlis"],
-    cal:60,
-    protein:2,
-    fiber:1
-  },
-
-  dosa:{
-    aliases:["dosa","dosas"],
-    cal:170,
-    protein:4,
-    fiber:1
-  },
-
-  roti:{
-    aliases:[
-      "roti",
-      "chapati",
-      "chapatti",
-      "poli"
-    ],
-    cal:110,
-    protein:3.5,
-    fiber:2.5
-  },
-
-  bhakri:{
-    aliases:[
-      "bhakri",
-      "bhakari"
-    ],
-    cal:140,
-    protein:4,
-    fiber:3
-  },
-
-  rice:{
-    aliases:[
-      "rice",
-      "bhat",
-      "chawal"
-    ],
-    cal:205,
-    protein:4.3,
-    fiber:.6
-  },
-
-  dal:{
-    aliases:[
-      "dal",
-      "daal",
-      "varan",
-      "amti"
-    ],
-    cal:180,
-    protein:10,
-    fiber:7
-  },
-
-  curd:{
-    aliases:[
-      "curd",
-      "dahi",
-      "yogurt"
-    ],
-    cal:100,
-    protein:5,
-    fiber:0
-  },
-
-  paneer:{
-    aliases:["paneer"],
-    cal:265,
-    protein:18,
-    fiber:0
-  },
-
-  chicken:{
-    aliases:[
-      "chicken",
-      "chicken curry",
-      "chicken masala"
-    ],
-    cal:250,
-    protein:27,
-    fiber:1
-  },
-
-  fish:{
-    aliases:[
-      "fish",
-      "machhi",
-      "machi"
-    ],
-    cal:220,
-    protein:25,
-    fiber:0
-  },
-
-  mutton:{
-    aliases:["mutton"],
-    cal:300,
-    protein:25,
-    fiber:0
-  },
-
-  rajma:{
-    aliases:[
-      "rajma",
-      "rajma curry"
-    ],
-    cal:220,
-    protein:14,
-    fiber:8
-  },
-
-  chole:{
-    aliases:[
-      "chole",
-      "chana",
-      "chhole"
-    ],
-    cal:240,
-    protein:12,
-    fiber:9
-  },
-
-  bhaji:{
-    aliases:[
-      "bhaji",
-      "sabzi",
-      "vegetable",
-      "veg"
-    ],
-    cal:150,
-    protein:4,
-    fiber:5
-  },
-
-  khichdi:{
-    aliases:[
-      "khichdi",
-      "khichadi"
-    ],
-    cal:280,
-    protein:9,
-    fiber:5
-  },
-
-  biryani:{
-    aliases:["biryani"],
-    cal:450,
-    protein:18,
-    fiber:3
-  },
-
-  pavbhaji:{
-    aliases:[
-      "pav bhaji",
-      "pavbhaji"
-    ],
-    cal:400,
-    protein:9,
-    fiber:7
-  },
-
-  vadapav:{
-    aliases:[
-      "vada pav",
-      "vadapav",
-      "vada-pav"
-    ],
-    cal:290,
-    protein:7,
-    fiber:4
-  },
-
-  vada:{
-    aliases:[
-      "vada",
-      "medu vada"
-    ],
-    cal:140,
-    protein:3,
-    fiber:2
-  },
-
-  samosa:{
-    aliases:[
-      "samosa",
-      "samosas"
-    ],
-    cal:250,
-    protein:5,
-    fiber:3
-  },
-
-  misal:{
-    aliases:[
-      "misal",
-      "misal pav",
-      "misalpav"
-    ],
-    cal:350,
-    protein:12,
-    fiber:8
-  },
-
-  bhel:{
-    aliases:[
-      "bhel",
-      "bhel puri"
-    ],
-    cal:250,
-    protein:6,
-    fiber:5
-  },
-
-  sandwich:{
-    aliases:["sandwich"],
-    cal:300,
-    protein:10,
-    fiber:3
-  },
-
-  pizza:{
-    aliases:["pizza"],
-    cal:285,
-    protein:12,
-    fiber:2
-  },
-
-  burger:{
-    aliases:["burger"],
-    cal:350,
-    protein:17,
-    fiber:2
-  },
-
-  noodles:{
-    aliases:[
-      "noodles",
-      "maggi"
-    ],
-    cal:330,
-    protein:8,
-    fiber:3
-  },
-
-  pasta:{
-    aliases:["pasta"],
-    cal:320,
-    protein:11,
-    fiber:3
-  },
-
-  biscuit:{
-    aliases:[
-      "biscuit",
-      "biscuits"
-    ],
-    cal:50,
-    protein:1,
-    fiber:.3
-  },
-
-  chocolate:{
-    aliases:["chocolate"],
-    cal:55,
-    protein:.7,
-    fiber:.5
-  },
-
-  icecream:{
-    aliases:[
-      "ice cream",
-      "icecream"
-    ],
-    cal:210,
-    protein:4,
-    fiber:0
-  },
-
-  chips:{
-    aliases:[
-      "chips",
-      "potato chips"
-    ],
-    cal:150,
-    protein:2,
-    fiber:1
-  },
-
-  peanuts:{
-    aliases:[
-      "peanut",
-      "peanuts",
-      "shengdana"
-    ],
-    cal:170,
-    protein:7,
-    fiber:2.5
-  },
-
-  almonds:{
-    aliases:[
-      "almond",
-      "almonds",
-      "badam"
-    ],
-    cal:165,
-    protein:6,
-    fiber:3.5
-  },
-
-  oats:{
-    aliases:["oats"],
-    cal:150,
-    protein:5,
-    fiber:4
-  }
-
-};
-
-
-/* =====================================================
-   QUANTITY DETECTION
-===================================================== */
-
-function getQuantity(text){
-
-  const number=
-    text.match(
-      /(\d+(?:\.\d+)?)/
-    );
-
-
-  if(number){
-
-    return parseFloat(
-      number[1]
-    );
-
-  }
-
-
-  const words={
-
-    one:1,
-    two:2,
-    three:3,
-    four:4,
-    five:5,
-
-    six:6,
-    seven:7,
-    eight:8,
-    nine:9,
-    ten:10,
-
-    ek:1,
-    do:2,
-    teen:3,
-    char:4,
-    pach:5
-
-  };
-
-
-  const lower=text.toLowerCase();
-
-
-  for(
-    const word in words
-  ){
-
-    if(
-      lower.includes(word)
-    ){
-
-      return words[word];
-
-    }
-
-  }
-
-
-  return 1;
-
+.input:focus{
+  border-color:
+    rgba(53,232,120,.42);
+
+  box-shadow:
+    0 0 0 3px rgba(53,232,120,.07);
 }
 
-
 /* =====================================================
-   FIND FOOD
+   CHAT
 ===================================================== */
 
-function findFood(text){
+.chat-box{
+  min-height:230px;
+  max-height:430px;
 
-  const lower=
-    text.toLowerCase();
+  overflow-y:auto;
 
+  padding:5px 1px;
 
-  let best=null;
+  margin-bottom:12px;
 
-  let bestLength=0;
-
-
-  for(
-    const key in foods
-  ){
-
-    for(
-      const alias of foods[key].aliases
-    ){
-
-      if(
-        lower.includes(
-          alias.toLowerCase()
-        )
-        &&
-        alias.length>bestLength
-      ){
-
-        best=key;
-
-        bestLength=
-          alias.length;
-
-      }
-
-    }
-
-  }
-
-
-  return best;
-
+  scroll-behavior:smooth;
 }
 
+.msg{
+  max-width:86%;
+
+  padding:11px 13px;
+
+  margin-bottom:9px;
+
+  border-radius:16px;
+
+  font-size:13px;
+
+  line-height:1.5;
+
+  word-wrap:break-word;
+}
+
+.msg.me{
+  margin-left:auto;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1eaf59,
+      #158e45
+    );
+
+  color:#f5fff8;
+
+  border-bottom-right-radius:5px;
+}
+
+.msg.bot{
+  margin-right:auto;
+
+  background:#101d15;
+
+  border:1px solid rgba(255,255,255,.06);
+
+  color:#dce9df;
+
+  border-bottom-left-radius:5px;
+}
+
+.chat-row{
+  display:flex;
+  gap:8px;
+}
+
+.chat-row .input{
+  flex:1;
+}
+
+.chat-send{
+  width:48px;
+  min-width:48px;
+
+  border:none;
+
+  border-radius:13px;
+
+  background:#35e878;
+
+  color:#031008;
+
+  font-size:19px;
+
+  font-weight:900;
+}
 
 /* =====================================================
-   FOOD CHAT
+   FOOD HISTORY
 ===================================================== */
 
-function addMessage(
-  text,
-  type
-){
+.food-item{
+  display:flex;
 
-  const chat=
-    document.getElementById(
-      "chat"
-    );
+  align-items:center;
 
+  justify-content:space-between;
 
-  const message=
-    document.createElement(
-      "div"
-    );
+  gap:10px;
 
+  padding:12px 0;
 
-  message.className=
-    "msg "+type;
-
-
-  message.innerHTML=
-    text;
-
-
-  chat.appendChild(
-    message
-  );
-
-
-  chat.scrollTop=
-    chat.scrollHeight;
-
+  border-bottom:
+    1px solid rgba(255,255,255,.055);
 }
 
-
-function analyzeFood(){
-
-  const input=
-    document.getElementById(
-      "foodInput"
-    );
-
-
-  const text=
-    input.value.trim();
-
-
-  if(!text){
-    return;
-  }
-
-
-  addMessage(
-    text,
-    "me"
-  );
-
-
-  const foodKey=
-    findFood(text);
-
-
-  if(!foodKey){
-
-    addMessage(
-
-      "🤔 I couldn't confidently identify that food yet.<br><br>"+
-
-      "Try:<br>"+
-      "• 2 chapatis<br>"+
-      "• 1 bowl dal<br>"+
-      "• 2 eggs<br>"+
-      "• 1 banana<br>"+
-      "• poha<br><br>"+
-
-      "The next version will use real AI for broader food recognition.",
-
-      "bot"
-
-    );
-
-
-    input.value="";
-
-    return;
-
-  }
-
-
-  const quantity=
-    getQuantity(text);
-
-
-  const food=
-    foods[foodKey];
-
-
-  const calories=
-    Math.round(
-      food.cal*quantity
-    );
-
-
-  const protein=
-    +(food.protein*quantity)
-      .toFixed(1);
-
-
-  const fiber=
-    +(food.fiber*quantity)
-      .toFixed(1);
-
-
-  data.calories+=
-    calories;
-
-
-  data.protein+=
-    protein;
-
-
-  data.fiber+=
-    fiber;
-
-
-  data.foods.push({
-
-    name:foodKey,
-
-    quantity:quantity,
-
-    calories:calories,
-
-    protein:protein,
-
-    fiber:fiber
-
-  });
-
-
-  saveData();
-
-
-  addMessage(
-
-    `✅ Added <b>${quantity} × ${foodKey}</b><br><br>
-
-    🔥 Calories:
-    <b>${calories} kcal</b><br>
-
-    💪 Protein:
-    <b>${protein} g</b><br>
-
-    🌾 Fiber:
-    <b>${fiber} g</b>`,
-
-    "bot"
-
-  );
-
-
-  input.value="";
-
-
-  updateUI();
-
+.food-item:last-child{
+  border-bottom:none;
 }
 
+.food-main{
+  min-width:0;
+}
+
+.food-name{
+  font-size:13px;
+  font-weight:700;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.food-quantity{
+  color:#718178;
+
+  font-size:10px;
+
+  margin-top:3px;
+}
+
+.food-nutrition{
+  text-align:right;
+
+  flex-shrink:0;
+}
+
+.food-cal{
+  font-size:12px;
+  font-weight:750;
+}
+
+.food-protein{
+  font-size:10px;
+  color:#7e9185;
+}
 
 /* =====================================================
-   ENTER KEY
+   ADVISOR
 ===================================================== */
 
-document
-  .getElementById("foodInput")
-  .addEventListener(
-    "keydown",
-    function(event){
+.advisor{
+  position:relative;
 
-      if(
-        event.key==="Enter"
-      ){
+  overflow:hidden;
 
-        analyzeFood();
+  background:
+    linear-gradient(
+      145deg,
+      rgba(53,232,120,.075),
+      rgba(255,255,255,.018)
+    );
 
-      }
+  border:1px solid rgba(53,232,120,.11);
+}
 
-    }
-  );
+.advisor::before{
+  content:"";
 
+  position:absolute;
+
+  width:120px;
+  height:120px;
+
+  border-radius:50%;
+
+  right:-55px;
+  top:-55px;
+
+  background:rgba(53,232,120,.07);
+}
+
+.advisor-icon{
+  width:38px;
+  height:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:rgba(53,232,120,.10);
+
+  font-size:19px;
+
+  margin-bottom:10px;
+}
+
+.advisor-title{
+  font-size:15px;
+  font-weight:800;
+
+  margin-bottom:6px;
+}
+
+.advisor-text{
+  color:#9aac9f;
+
+  font-size:12px;
+
+  line-height:1.6;
+}
 
 /* =====================================================
    ACTIVITY
 ===================================================== */
 
-function saveActivity(){
+.activity-box{
+  display:flex;
+  align-items:center;
 
-  data.steps=
-    Math.max(
-      0,
-      parseInt(
-        document.getElementById(
-          "stepsInput"
-        ).value
-      ) || 0
+  gap:12px;
+
+  padding:14px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.055);
+
+  border-radius:16px;
+
+  margin-bottom:10px;
+}
+
+.activity-icon{
+  width:42px;
+  height:42px;
+
+  border-radius:13px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(53,232,120,.08);
+
+  font-size:19px;
+}
+
+.activity-info{
+  flex:1;
+}
+
+.activity-name{
+  font-size:13px;
+  font-weight:700;
+}
+
+.activity-description{
+  font-size:10px;
+  color:#74867c;
+  margin-top:3px;
+}
+
+/* =====================================================
+   FRIEND
+===================================================== */
+
+.friend-header{
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+.avatar{
+  width:48px;
+  height:48px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #35e878,
+      #14783c
     );
 
+  color:#031008;
 
-  data.exercise=
-    Math.max(
-      0,
-      parseInt(
-        document.getElementById(
-          "exerciseInput"
-        ).value
-      ) || 0
-    );
+  font-size:18px;
+  font-weight:900;
+}
 
+.friend-name{
+  font-size:15px;
+  font-weight:800;
+}
 
-  data.sleep=
-    Math.max(
-      0,
-      parseFloat(
-        document.getElementById(
-          "sleepInput"
-        ).value
-      ) || 0
-    );
+.friend-status{
+  font-size:10px;
+  color:#6e8477;
+  margin-top:3px;
+}
 
+.compare-row{
+  display:grid;
 
-  saveData();
+  grid-template-columns:1fr auto 1fr;
 
+  align-items:center;
 
-  alert(
-    "Activity saved successfully ✅"
-  );
+  gap:10px;
 
+  margin-top:18px;
+}
 
-  updateUI();
+.compare-user{
+  text-align:center;
+}
+
+.compare-value{
+  font-size:23px;
+  font-weight:900;
+}
+
+.compare-label{
+  font-size:10px;
+  color:#718278;
+  margin-top:4px;
+}
+
+.compare-vs{
+  font-size:10px;
+  color:#607168;
+}
+
+/* =====================================================
+   SETTINGS / PROFILE
+===================================================== */
+
+.setting-row{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  padding:14px 0;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.055);
+}
+
+.setting-row:last-child{
+  border-bottom:none;
+}
+
+.setting-info{
+  flex:1;
+}
+
+.setting-name{
+  font-size:13px;
+  font-weight:700;
+}
+
+.setting-description{
+  font-size:10px;
+  color:#728278;
+  margin-top:4px;
+}
+
+/* =====================================================
+   WEIGHT / GOAL
+===================================================== */
+
+.goal-box{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:10px;
+}
+
+.goal-stat{
+  padding:15px;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.055);
+}
+
+.goal-label{
+  font-size:10px;
+  color:#73847a;
+  margin-bottom:5px;
+}
+
+.goal-value{
+  font-size:20px;
+  font-weight:850;
+}
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty{
+  text-align:center;
+
+  padding:30px 15px;
+
+  color:#617168;
+
+  font-size:12px;
+
+  line-height:1.6;
+}
+
+.empty-icon{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
+  display:inline-flex;
+
+  align-items:center;
+
+  padding:5px 8px;
+
+  border-radius:8px;
+
+  font-size:9px;
+
+  font-weight:750;
+
+  background:rgba(53,232,120,.08);
+
+  color:#71ec9b;
+
+  border:1px solid rgba(53,232,120,.10);
+}
+
+.badge-gray{
+  background:rgba(255,255,255,.05);
+  color:#84958b;
+}
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-nav{
+  position:fixed;
+
+  z-index:100;
+
+  left:50%;
+
+  bottom:0;
+
+  transform:translateX(-50%);
+
+  width:100%;
+
+  max-width:520px;
+
+  padding:
+    8px
+    8px
+    calc(8px + env(safe-area-inset-bottom));
+
+  background:
+    rgba(7,16,11,.95);
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
+  border-top:
+    1px solid rgba(255,255,255,.065);
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+}
+
+.nav-item{
+  border:none;
+
+  background:transparent;
+
+  color:#64766b;
+
+  padding:7px 3px;
+
+  border-radius:12px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:3px;
+
+  transition:
+    color .15s ease,
+    background .15s ease;
+}
+
+.nav-item.active{
+  color:#53eb8a;
+
+  background:rgba(53,232,120,.065);
+}
+
+.nav-icon{
+  font-size:18px;
+
+  line-height:1;
+}
+
+.nav-label{
+  font-size:9px;
+
+  font-weight:650;
+}
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.divider{
+  height:1px;
+
+  background:
+    rgba(255,255,255,.055);
+
+  margin:15px 0;
+}
+
+/* =====================================================
+   SMALL TEXT
+===================================================== */
+
+.muted{
+  color:#718278;
+  font-size:10px;
+}
+
+.success{
+  color:#65ed96;
+}
+
+.warning{
+  color:#f3c969;
+}
+
+.danger{
+  color:#ff7e7e;
+}
+
+/* =====================================================
+   WEEKLY RESULT
+===================================================== */
+
+.weekly-result{
+  text-align:center;
+
+  padding:22px 15px;
+}
+
+.weekly-score{
+  font-size:42px;
+
+  font-weight:950;
+
+  letter-spacing:-2px;
+
+  margin-bottom:4px;
+}
+
+.weekly-caption{
+  color:#718279;
+
+  font-size:11px;
+}
+
+.weekly-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:8px;
+
+  margin-top:18px;
+}
+
+.week-stat{
+  padding:12px 6px;
+
+  background:rgba(255,255,255,.025);
+
+  border-radius:13px;
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+/* =====================================================
+   STREAK
+===================================================== */
+
+.streak{
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.streak-icon{
+  font-size:25px;
+}
+
+.streak-number{
+  font-size:19px;
+  font-weight:850;
+}
+
+.streak-label{
+  color:#718278;
+  font-size:10px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:360px){
+
+  main{
+    padding:14px;
+  }
+
+  .page-title{
+    font-size:24px;
+  }
+
+  .hero{
+    padding:16px;
+  }
+
+  .score{
+    width:64px;
+    height:64px;
+  }
+
+  .score-number{
+    font-size:22px;
+  }
 
 }
 
-
 /* =====================================================
-   GOALS
+   SCROLLBAR
 ===================================================== */
 
-function saveGoals(){
+::-webkit-scrollbar{
+  width:4px;
+}
 
-  data.weight=
-    document.getElementById(
-      "weightInput"
-    ).value;
+::-webkit-scrollbar-track{
+  background:transparent;
+}
 
+::-webkit-scrollbar-thumb{
+  background:#26362d;
 
-  data.goalWeight=
-    document.getElementById(
-      "goalWeightInput"
-    ).value;
+  border-radius:10px;
+}
 
+/* =====================================================
+   SELECTION
+===================================================== */
 
-  data.calorieTarget=
-    parseInt(
-      document.getElementById(
-        "calorieTargetInput"
-      ).value
-    ) || 2200;
+::selection{
+  background:rgba(53,232,120,.25);
+}
 
+/* =====================================================
+   LOADING
+===================================================== */
 
-  data.proteinTarget=
-    parseInt(
-      document.getElementById(
-        "proteinTargetInput"
-      ).value
-    ) || 120;
+.loading{
+  display:inline-flex;
 
+  align-items:center;
 
-  saveData();
+  gap:5px;
+}
 
+.dot{
+  width:5px;
+  height:5px;
 
-  alert(
-    "Goals saved successfully 🎯"
-  );
+  border-radius:50%;
 
+  background:#6eeb98;
 
-  updateUI();
+  animation:
+    pulseDot 1s infinite ease-in-out;
+}
+
+.dot:nth-child(2){
+  animation-delay:.15s;
+}
+
+.dot:nth-child(3){
+  animation-delay:.3s;
+}
+
+@keyframes pulseDot{
+
+  0%,100%{
+    opacity:.25;
+    transform:translateY(0);
+  }
+
+  50%{
+    opacity:1;
+    transform:translateY(-3px);
+  }
 
 }
 
-
 /* =====================================================
-   DAILY SCORE
+   FOOD AI LABEL
 ===================================================== */
 
-function calculateScore(){
+.ai-label{
+  display:flex;
 
-  let score=0;
+  align-items:center;
 
+  gap:6px;
 
-  /* CALORIES */
+  color:#708379;
 
-  if(
-    data.calories>0
-  ){
+  font-size:9px;
 
-    const difference=
-      Math.abs(
-        data.calorieTarget-
-        data.calories
-      );
+  margin-top:8px;
 
+  justify-content:center;
+}
 
-    if(
-      difference<=150
-    ){
+/* =====================================================
+   FORM ROW
+===================================================== */
 
-      score+=25;
+.form-row{
+  display:grid;
 
-    }else if(
-      difference<=300
-    ){
+  grid-template-columns:1fr 1fr;
 
-      score+=20;
+  gap:10px;
+}
 
-    }else if(
-      difference<=500
-    ){
+/* =====================================================
+   ACTION ROW
+===================================================== */
 
-      score+=15;
+.action-row{
+  display:flex;
 
-    }else{
+  gap:8px;
 
-      score+=8;
+  margin-top:10px;
+}
 
-    }
+.action-row .btn{
+  flex:1;
+}
 
+/* =====================================================
+   TOGGLE
+===================================================== */
+
+.toggle{
+  width:44px;
+  height:25px;
+
+  border-radius:20px;
+
+  background:#26342b;
+
+  border:none;
+
+  padding:3px;
+
+  transition:.2s;
+}
+
+.toggle::after{
+  content:"";
+
+  display:block;
+
+  width:19px;
+  height:19px;
+
+  border-radius:50%;
+
+  background:#819087;
+
+  transition:.2s;
+}
+
+.toggle.active{
+  background:#176b39;
+}
+
+.toggle.active::after{
+  transform:translateX(19px);
+
+  background:#53ed8b;
+}
+
+/* =====================================================
+   HIDE NUMBER ARROWS
+===================================================== */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+input[type=number]{
+  appearance:textfield;
+}
+
+/* =====================================================
+   SAFE AREA
+===================================================== */
+
+@supports(padding:max(0px)){
+
+  body{
+    padding-bottom:
+      env(safe-area-inset-bottom);
   }
-
-
-  /* PROTEIN */
-
-  if(
-    data.protein>=
-    data.proteinTarget
-  ){
-
-    score+=25;
-
-  }else if(
-    data.protein>=
-    data.proteinTarget*.75
-  ){
-
-    score+=20;
-
-  }else if(
-    data.protein>=
-    data.proteinTarget*.5
-  ){
-
-    score+=12;
-
-  }else if(
-    data.protein>0
-  ){
-
-    score+=7;
-
-  }
-
-
-  /* STEPS */
-
-  if(
-    data.steps>=10000
-  ){
-
-    score+=20;
-
-  }else if(
-    data.steps>=8000
-  ){
-
-    score+=18;
-
-  }else if(
-    data.steps>=5000
-  ){
-
-    score+=13;
-
-  }else if(
-    data.steps>=2000
-  ){
-
-    score+=8;
-
-  }
-
-
-  /* EXERCISE */
-
-  if(
-    data.exercise>=45
-  ){
-
-    score+=15;
-
-  }else if(
-    data.exercise>=30
-  ){
-
-    score+=13;
-
-  }else if(
-    data.exercise>=15
-  ){
-
-    score+=8;
-
-  }
-
-
-  /* SLEEP */
-
-  if(
-    data.sleep>=7 &&
-    data.sleep<=9
-  ){
-
-    score+=15;
-
-  }else if(
-    data.sleep>=6
-  ){
-
-    score+=10;
-
-  }else if(
-    data.sleep>0
-  ){
-
-    score+=5;
-
-  }
-
-
-  return Math.min(
-    100,
-    score
-  );
 
 }
 
-
 /* =====================================================
-   SMART DAILY ADVISOR
+   END CSS
 ===================================================== */
 
-function renderAdvisor(){
+</style>
+</head>
 
-  const box=
-    document.getElementById(
-      "advisorContent"
-    );
+<body>
 
+<div class="app">
 
-  if(!box){
-    return;
-  }
+  <!-- =================================================
+       TOP BAR
+  ================================================== -->
 
+  <header class="topbar">
 
-  const advice=[];
+    <div class="brand">
 
+      <div class="brand-icon">
+        FS
+      </div>
 
-  const calorieTarget=
-    data.calorieTarget || 2200;
+      <div class="brand-text">
 
+        <div class="brand-name">
+          FitSync
+        </div>
 
-  const proteinTarget=
-    data.proteinTarget || 120;
+        <div class="brand-tagline">
+          Track yourself. Improve together.
+        </div>
 
+      </div>
 
-  const calories=
-    data.calories || 0;
+    </div>
 
+  </header>
 
-  const protein=
-    data.protein || 0;
 
+  <!-- =================================================
+       MAIN
+  ================================================== -->
 
-  const fiber=
-    data.fiber || 0;
+  <main>
 
+    <!-- =================================================
+         HOME PAGE
+    ================================================== -->
 
-  const steps=
-    data.steps || 0;
+    <section
+      id="homePage"
+      class="page active"
+    >
 
+      <div class="page-title">
+        Good day 👋
+      </div>
 
-  const exercise=
-    data.exercise || 0;
+      <div class="page-subtitle">
+        Let's see how you're doing today.
+      </div>
 
 
-  const sleep=
-    data.sleep || 0;
+      <!-- DAILY SCORE -->
 
+      <div class="hero">
 
-  const score=
-    calculateScore();
+        <div class="hero-top">
 
+          <div>
 
-  /* =====================
-     PROTEIN
-  ===================== */
+            <div class="hero-label">
+              TODAY'S SCORE
+            </div>
 
-  if(
-    protein<proteinTarget*.5
-  ){
+            <div
+              class="hero-title"
+              id="scoreMessage"
+            >
+              Let's make today count.
+            </div>
 
-    advice.push(
+          </div>
 
-      `<b>💪 Protein is quite low</b><br>
-      You've had ${Math.round(protein)}g out of ${proteinTarget}g.
-      Consider eggs, paneer, dal, curd, chicken or fish.`
+          <div class="score">
 
-    );
+            <div
+              class="score-number"
+              id="dailyScore"
+            >
+              0
+            </div>
 
-  }else if(
-    protein<proteinTarget
-  ){
+            <div class="score-small">
+              / 100
+            </div>
 
-    advice.push(
+          </div>
 
-      `<b>💪 Increase your protein</b><br>
-      You're at ${Math.round(protein)}g/${proteinTarget}g.
-      A protein-rich meal can help you reach your target.`
+        </div>
 
-    );
+      </div>
 
-  }else{
 
-    advice.push(
+      <!-- NUTRITION -->
 
-      `<b>💪 Great protein intake!</b><br>
-      You've reached your protein target.`
+      <div class="card">
 
-    );
+        <div class="card-header">
 
-  }
+          <div class="card-title">
+            Today's Nutrition
+          </div>
 
+          <span class="badge">
+            Daily
+          </span>
 
-  /* =====================
-     CALORIES
-  ===================== */
+        </div>
 
-  if(
-    calories===0
-  ){
+        <div class="mini-grid">
 
-    advice.push(
+          <div class="mini-card">
 
-      `<b>🍱 Start logging your food</b><br>
-      Add your meals so I can analyze your nutrition.`
+            <div
+              class="mini-value"
+              id="homeCalories"
+            >
+              0
+            </div>
 
-    );
+            <div class="mini-label">
+              kcal
+            </div>
 
-  }else if(
-    calories<calorieTarget*.6
-  ){
+          </div>
 
-    advice.push(
+          <div class="mini-card">
 
-      `<b>🔥 Calories are currently low</b><br>
-      You've logged ${Math.round(calories)} kcal out of ${calorieTarget} kcal.`
+            <div
+              class="mini-value"
+              id="homeProtein"
+            >
+              0g
+            </div>
 
-    );
+            <div class="mini-label">
+              protein
+            </div>
 
-  }else if(
-    calories>calorieTarget*1.15
-  ){
+          </div>
 
-    advice.push(
+          <div class="mini-card">
 
-      `<b>⚠️ Calories are above your target</b><br>
-      You've logged ${Math.round(calories)} kcal today.`
+            <div
+              class="mini-value"
+              id="homeFiber"
+            >
+              0g
+            </div>
 
-    );
+            <div class="mini-label">
+              fiber
+            </div>
 
-  }else{
+          </div>
 
-    advice.push(
+        </div>
 
-      `<b>🔥 Calories look reasonable</b><br>
-      You're at ${Math.round(calories)} kcal today.`
+      </div>
 
-    );
 
-  }
+      <!-- ACTIVITY -->
 
+      <div class="card">
 
-  /* =====================
-     FIBER
-  ===================== */
+        <div class="card-header">
 
-  if(
-    fiber<15
-  ){
+          <div class="card-title">
+            Activity
+          </div>
 
-    advice.push(
+          <span class="badge badge-gray">
+            Today
+          </span>
 
-      `<b>🌾 Add more fiber</b><br>
-      Try fruits, vegetables, dal, beans, oats or whole grains.`
+        </div>
 
-    );
+        <div class="stat-grid">
 
-  }else if(
-    fiber<25
-  ){
+          <div class="stat-card">
 
-    advice.push(
+            <div class="stat-icon">
+              👟
+            </div>
 
-      `<b>🌾 Fiber can be improved</b><br>
-      Add another fruit or vegetable today.`
+            <div
+              class="stat-value"
+              id="homeSteps"
+            >
+              0
+            </div>
 
-    );
+            <div class="stat-label">
+              steps
+            </div>
 
-  }else{
+          </div>
 
-    advice.push(
+          <div class="stat-card">
 
-      `<b>🌾 Good fiber intake!</b><br>
-      Your fiber intake is looking strong.`
+            <div class="stat-icon">
+              🏋️
+            </div>
 
-    );
+            <div
+              class="stat-value"
+              id="homeExercise"
+            >
+              0
+            </div>
 
-  }
+            <div class="stat-label">
+              exercise min
+            </div>
 
+          </div>
 
-  /* =====================
-     STEPS
-  ===================== */
+          <div class="stat-card">
 
-  if(
-    steps<3000
-  ){
+            <div class="stat-icon">
+              😴
+            </div>
 
-    advice.push(
+            <div
+              class="stat-value"
+              id="homeSleep"
+            >
+              0h
+            </div>
 
-      `<b>🚶 Get moving</b><br>
-      You've logged ${steps.toLocaleString()} steps.
-      A short walk would be a good start.`
+            <div class="stat-label">
+              sleep
+            </div>
 
-    );
+          </div>
 
-  }else if(
-    steps<8000
-  ){
+          <div class="stat-card">
 
-    advice.push(
+            <div class="stat-icon">
+              🔥
+            </div>
 
-      `<b>🚶 Keep walking</b><br>
-      You're at ${steps.toLocaleString()} steps.
-      Try to reach 8,000+ today.`
+            <div
+              class="stat-value"
+              id="homeGoalProgress"
+            >
+              0%
+            </div>
 
-    );
+            <div class="stat-label">
+              goal progress
+            </div>
 
-  }else{
+          </div>
 
-    advice.push(
+        </div>
 
-      `<b>🚶 Excellent movement!</b><br>
-      You've reached ${steps.toLocaleString()} steps.`
+      </div>
 
-    );
 
-  }
+      <!-- SMART ADVISOR -->
 
+      <div class="card advisor">
 
-  /* =====================
-     EXERCISE
-  ===================== */
+        <div class="advisor-icon">
+          🤖
+        </div>
 
-  if(
-    exercise===0
-  ){
+        <div class="advisor-title">
+          Smart Daily Advisor
+        </div>
 
-    advice.push(
+        <div
+          class="advisor-text"
+          id="smartAdvisor"
+        >
+          Add your activity, food and goal information to get your personalized daily advice.
+        </div>
 
-      `<b>🏋️ Exercise reminder</b><br>
-      You haven't logged exercise yet.
-      Even 15–30 minutes can help.`
+      </div>
 
-    );
 
-  }else if(
-    exercise<30
-  ){
+      <!-- NUTRITION PROGRESS -->
 
-    advice.push(
+      <div class="card">
 
-      `<b>🏋️ Almost there!</b><br>
-      You've completed ${exercise} minutes of exercise.`
+        <div class="card-title">
+          Nutrition Progress
+        </div>
 
-    );
+        <div class="progress-row">
 
-  }else{
+          <div class="progress-top">
 
-    advice.push(
+            <span class="progress-name">
+              Calories
+            </span>
 
-      `<b>🏋️ Great workout!</b><br>
-      ${exercise} minutes of exercise logged today.`
+            <span
+              class="progress-number"
+              id="calorieProgressText"
+            >
+              0 / 0 kcal
+            </span>
 
-    );
+          </div>
 
-  }
+          <div class="progress-track">
 
-
-  /* =====================
-     SLEEP
-  ===================== */
-
-  if(
-    sleep===0
-  ){
-
-    advice.push(
-
-      `<b>😴 Sleep isn't logged</b><br>
-      Enter your sleep hours in Activity.`
-
-    );
-
-  }else if(
-    sleep<6
-  ){
-
-    advice.push(
-
-      `<b>😴 Prioritize sleep tonight</b><br>
-      You logged ${sleep} hours.`
-
-    );
-
-  }else if(
-    sleep<7
-  ){
-
-    advice.push(
-
-      `<b>😴 Try to get more sleep</b><br>
-      You're at ${sleep} hours. Aim for around 7–9 hours.`
-
-    );
-
-  }else if(
-    sleep<=9
-  ){
-
-    advice.push(
-
-      `<b>😴 Good sleep!</b><br>
-      ${sleep} hours is within your target range.`
-
-    );
-
-  }else{
-
-    advice.push(
-
-      `<b>😴 You slept ${sleep} hours</b><br>
-      Try to keep your sleep schedule consistent.`
-
-    );
-
-  }
-
-
-  /* =====================
-     SCORE MESSAGE
-  ===================== */
-
-  let scoreMessage;
-
-
-  if(
-    score>=85
-  ){
-
-    scoreMessage=
-
-      `<b>🏆 Excellent day!</b><br>
-      Your overall score is ${score}/100.
-      Keep this consistency going.`;
-
-  }else if(
-    score>=70
-  ){
-
-    scoreMessage=
-
-      `<b>🔥 Good day!</b><br>
-      Your score is ${score}/100.
-      A few improvements can make it excellent.`;
-
-  }else if(
-    score>=50
-  ){
-
-    scoreMessage=
-
-      `<b>👍 Decent start.</b><br>
-      Your score is ${score}/100.
-      Focus on your weakest areas.`;
-
-  }else{
-
-    scoreMessage=
-
-      `<b>🌱 Let's improve today.</b><br>
-      Your score is ${score}/100.
-      Start with one small improvement.`;
-
-  }
-
-
-  /* =====================
-     WEIGHT GOAL
-  ===================== */
-
-  if(
-    data.weight &&
-    data.goalWeight
-  ){
-
-    const current=
-      parseFloat(data.weight);
-
-
-    const goal=
-      parseFloat(data.goalWeight);
-
-
-    if(
-      current>goal
-    ){
-
-      advice.push(
-
-        `<b>🎯 Goal focus</b><br>
-        Your current weight is ${current} kg and your goal is ${goal} kg.
-        Stay consistent with nutrition and activity rather than trying to change everything at once.`
-
-      );
-
-    }else if(
-      current===goal
-    ){
-
-      advice.push(
-
-        `<b>🎯 Goal reached!</b><br>
-        Your current and goal weight are the same. Focus on maintaining healthy habits.`
-
-      );
-
-    }
-
-  }
-
-
-  box.innerHTML=
-
-    `<div class="advice">
-      ${scoreMessage}
-    </div>`+
-
-    advice
-      .map(item=>
-        `<div class="advice">
-          ${item}
-        </div>`
-      )
-      .join("");
-
-}
-
-
-/* =====================================================
-   FOOD HISTORY
-===================================================== */
-
-function renderFoodHistory(){
-
-  const box=
-    document.getElementById(
-      "foodHistory"
-    );
-
-
-  if(
-    data.foods.length===0
-  ){
-
-    box.innerHTML=
-      `<div class="empty">
-        No food added today.
-      </div>`;
-
-    return;
-
-  }
-
-
-  box.innerHTML="";
-
-
-  data.foods
-    .slice()
-    .reverse()
-    .forEach(food=>{
-
-      const div=
-        document.createElement(
-          "div"
-        );
-
-
-      div.className=
-        "food-item";
-
-
-      div.innerHTML=
-
-        `<div>
-
-          <b>
-            ${food.quantity}
-            ×
-            ${food.name}
-          </b>
-
-          <div class="muted">
-
-            ${food.protein}g protein
-            •
-            ${food.fiber}g fiber
+            <div
+              class="progress-fill"
+              id="calorieProgress"
+            ></div>
 
           </div>
 
         </div>
 
 
-        <div>
+        <div class="progress-row">
 
-          <b>
-            ${food.calories}
-          </b>
+          <div class="progress-top">
 
-          <div class="muted">
-            kcal
+            <span class="progress-name">
+              Protein
+            </span>
+
+            <span
+              class="progress-number"
+              id="proteinProgressText"
+            >
+              0 / 0 g
+            </span>
+
           </div>
 
-        </div>`;
+          <div class="progress-track">
+
+            <div
+              class="progress-fill"
+              id="proteinProgress"
+            ></div>
+
+          </div>
+
+        </div>
 
 
-      box.appendChild(
-        div
-      );
+        <div class="progress-row">
 
-    });
+          <div class="progress-top">
 
+            <span class="progress-name">
+              Fiber
+            </span>
+
+            <span
+              class="progress-number"
+              id="fiberProgressText"
+            >
+              0 / 25 g
+            </span>
+
+          </div>
+
+          <div class="progress-track">
+
+            <div
+              class="progress-fill"
+              id="fiberProgress"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FOOD PAGE
+    ================================================== -->
+
+    <section
+      id="foodPage"
+      class="page"
+    >
+
+      <div class="page-title">
+        Food 🍽️
+      </div>
+
+      <div class="page-subtitle">
+        Tell FitSync what you ate and let AI estimate the nutrition.
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          FitSync Food AI
+        </div>
+
+        <div
+          class="chat-box"
+          id="foodChat"
+        >
+
+          <div class="msg bot">
+
+            👋 Tell me what you ate.
+
+            <br><br>
+
+            Example:
+
+            <br>
+            • 2 eggs and 1 banana
+            <br>
+            • 3 chapatis with dal
+            <br>
+            • 1 bowl poha
+
+          </div>
+
+        </div>
+
+
+        <div class="chat-row">
+
+          <input
+            id="foodInput"
+            class="input"
+            type="text"
+            autocomplete="off"
+            placeholder="What did you eat?"
+          >
+
+          <button
+            class="chat-send"
+            onclick="analyzeFood()"
+            aria-label="Analyze food"
+          >
+            ➤
+          </button>
+
+        </div>
+
+        <div class="ai-label">
+          🤖 Powered by FitSync AI
+        </div>
+
+      </div>
+
+
+      <!-- FOOD TOTALS -->
+
+      <div class="card">
+
+        <div class="card-title">
+          Today's Food Total
+        </div>
+
+        <div class="mini-grid">
+
+          <div class="mini-card">
+
+            <div
+              class="mini-value"
+              id="foodCalories"
+            >
+              0
+            </div>
+
+            <div class="mini-label">
+              kcal
+            </div>
+
+          </div>
+
+          <div class="mini-card">
+
+            <div
+              class="mini-value"
+              id="foodProtein"
+            >
+              0g
+            </div>
+
+            <div class="mini-label">
+              protein
+            </div>
+
+          </div>
+
+          <div class="mini-card">
+
+            <div
+              class="mini-value"
+              id="foodFiber"
+            >
+              0g
+            </div>
+
+            <div class="mini-label">
+              fiber
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOD HISTORY -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="card-title">
+            Today's Food
+          </div>
+
+          <span
+            class="badge badge-gray"
+            id="foodCount"
+          >
+            0 items
+          </span>
+
+        </div>
+
+        <div id="foodHistory">
+
+          <div class="empty">
+
+            <div class="empty-icon">
+              🍽️
+            </div>
+
+            No food added yet.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ACTIVITY PAGE
+    ================================================== -->
+
+    <section
+      id="activityPage"
+      class="page"
+    >
+
+      <div class="page-title">
+        Activity 💪
+      </div>
+
+      <div class="page-subtitle">
+        Enter your activity manually. FitSync does not use automatic step counting.
+      </div>
+
+
+      <!-- STEPS -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="card-title">
+            👟 Steps
+          </div>
+
+          <span class="badge">
+            Manual
+          </span>
+
+        </div>
+
+        <div class="input-group">
+
+          <label class="input-label">
+            Today's steps
+          </label>
+
+          <input
+            id="stepsInput"
+            class="input"
+            type="number"
+            min="0"
+            inputmode="numeric"
+            placeholder="Example: 6500"
+          >
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          onclick="saveActivity()"
+        >
+          Save Steps
+        </button>
+
+      </div>
+
+
+      <!-- EXERCISE -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="card-title">
+            🏋️ Exercise
+          </div>
+
+        </div>
+
+        <div class="input-group">
+
+          <label class="input-label">
+            Exercise minutes today
+          </label>
+
+          <input
+            id="exerciseInput"
+            class="input"
+            type="number"
+            min="0"
+            inputmode="numeric"
+            placeholder="Example: 30"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- SLEEP -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div class="card-title">
+            😴 Sleep
+          </div>
+
+        </div>
+
+        <div class="input-group">
+
+          <label class="input-label">
+            Sleep hours
+          </label>
+
+          <input
+            id="sleepInput"
+            class="input"
+            type="number"
+            min="0"
+            max="24"
+            step="0.5"
+            inputmode="decimal"
+            placeholder="Example: 7.5"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="saveActivity()"
+      >
+        Save Activity
+      </button>
+
+    </section>
+
+
+    <!-- =================================================
+         FRIEND PAGE
+    ================================================== -->
+
+    <section
+      id="friendPage"
+      class="page"
+    >
+
+      <div class="page-title">
+        Friend 👥
+      </div>
+
+      <div class="page-subtitle">
+        Improve together by sharing your progress.
+      </div>
+
+
+      <div class="card">
+
+        <div class="friend-header">
+
+          <div class="avatar">
+            F
+          </div>
+
+          <div>
+
+            <div class="friend-name">
+              Friend
+            </div>
+
+            <div class="friend-status">
+              Demo connection
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="compare-row">
+
+          <div class="compare-user">
+
+            <div
+              class="compare-value"
+              id="myFriendScore"
+            >
+              0
+            </div>
+
+            <div class="compare-label">
+              Your score
+            </div>
+
+          </div>
+
+          <div class="compare-vs">
+            VS
+          </div>
+
+          <div class="compare-user">
+
+            <div
+              class="compare-value"
+              id="friendScore"
+            >
+              0
+            </div>
+
+            <div class="compare-label">
+              Friend score
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Today's Comparison
+        </div>
+
+        <div class="stat-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              👟
+            </div>
+
+            <div
+              class="stat-value"
+              id="myFriendSteps"
+            >
+              0
+            </div>
+
+            <div class="stat-label">
+              your steps
+            </div>
+
+          </div>
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              👟
+            </div>
+
+            <div
+              class="stat-value"
+              id="friendSteps"
+            >
+              0
+            </div>
+
+            <div class="stat-label">
+              friend steps
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card advisor">
+
+        <div class="advisor-icon">
+          🤝
+        </div>
+
+        <div class="advisor-title">
+          Friendly Progress
+        </div>
+
+        <div class="advisor-text">
+          Connect your friend account later to see live progress, weekly results and shared streaks.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PROGRESS PAGE
+    ================================================== -->
+
+    <section
+      id="progressPage"
+      class="page"
+    >
+
+      <div class="page-title">
+        Progress 📈
+      </div>
+
+      <div class="page-subtitle">
+        Set your body-weight goal and track your journey.
+      </div>
+
+
+      <!-- GOAL -->
+
+      <div class="card">
+
+        <div class="card-title">
+          Your Goal
+        </div>
+
+
+        <div class="goal-box">
+
+          <div class="goal-stat">
+
+            <div class="goal-label">
+              Current weight
+            </div>
+
+            <div
+              class="goal-value"
+              id="currentWeightDisplay"
+            >
+              0 kg
+            </div>
+
+          </div>
+
+
+          <div class="goal-stat">
+
+            <div class="goal-label">
+              Goal weight
+            </div>
+
+            <div
+              class="goal-value"
+              id="goalWeightDisplay"
+            >
+              0 kg
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- GOAL INPUT -->
+
+      <div class="card">
+
+        <div class="card-title">
+          Update Goal
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="input-group">
+
+            <label class="input-label">
+              Current weight (kg)
+            </label>
+
+            <input
+              id="currentWeightInput"
+              class="input"
+              type="number"
+              min="1"
+              step="0.1"
+              inputmode="decimal"
+              placeholder="75"
+            >
+
+          </div>
+
+
+          <div class="input-group">
+
+            <label class="input-label">
+              Goal weight (kg)
+            </label>
+
+            <input
+              id="goalWeightInput"
+              class="input"
+              type="number"
+              min="1"
+              step="0.1"
+              inputmode="decimal"
+              placeholder="68"
+            >
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary"
+          onclick="saveGoal()"
+        >
+          Save Goal
+        </button>
+
+      </div>
+
+
+      <!-- TARGETS -->
+
+      <div class="card">
+
+        <div class="card-title">
+          Recommended Daily Targets
+        </div>
+
+        <div class="stat-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              🔥
+            </div>
+
+            <div
+              class="stat-value"
+              id="calorieTargetDisplay"
+            >
+              0
+            </div>
+
+            <div class="stat-label">
+              calories
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              💪
+            </div>
+
+            <div
+              class="stat-value"
+              id="proteinTargetDisplay"
+            >
+              0g
+            </div>
+
+            <div class="stat-label">
+              protein
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- WEEKLY -->
+
+      <div class="card">
+
+        <div class="card-title">
+          Weekly Result
+        </div>
+
+        <div class="weekly-result">
+
+          <div
+            class="weekly-score"
+            id="weeklyScore"
+          >
+            —
+          </div>
+
+          <div class="weekly-caption">
+            Sunday weekly result
+          </div>
+
+
+          <div class="weekly-grid">
+
+            <div class="week-stat">
+
+              <div
+                class="mini-value"
+                id="weeklySteps"
+              >
+                0
+              </div>
+
+              <div class="mini-label">
+                steps
+              </div>
+
+            </div>
+
+            <div class="week-stat">
+
+              <div
+                class="mini-value"
+                id="weeklyExercise"
+              >
+                0
+              </div>
+
+              <div class="mini-label">
+                exercise min
+              </div>
+
+            </div>
+
+            <div class="week-stat">
+
+              <div
+                class="mini-value"
+                id="weeklySleep"
+              >
+                0h
+              </div>
+
+              <div class="mini-label">
+                sleep
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =================================================
+       BOTTOM NAVIGATION
+  ================================================== -->
+
+  <nav class="bottom-nav">
+
+    <button
+      class="nav-item active"
+      onclick="showPage('homePage',this)"
+    >
+
+      <span class="nav-icon">
+        🏠
+      </span>
+
+      <span class="nav-label">
+        Home
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showPage('foodPage',this)"
+    >
+
+      <span class="nav-icon">
+        🍽️
+      </span>
+
+      <span class="nav-label">
+        Food
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showPage('activityPage',this)"
+    >
+
+      <span class="nav-icon">
+        💪
+      </span>
+
+      <span class="nav-label">
+        Activity
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showPage('friendPage',this)"
+    >
+
+      <span class="nav-icon">
+        👥
+      </span>
+
+      <span class="nav-label">
+        Friend
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showPage('progressPage',this)"
+    >
+
+      <span class="nav-icon">
+        📈
+      </span>
+
+      <span class="nav-label">
+        Progress
+      </span>
+
+    </button>
+
+  </nav>
+
+</div>
+
+
+<!-- =====================================================
+     PART 1 ENDS HERE
+
+     PART 2 WILL START WITH:
+     <script>
+===================================================== -->
+<script>
+const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
+const STORAGE_KEY="fitsync_data";
+let data={
+calories:0,
+protein:0,
+fiber:0,
+steps:0,
+exercise:0,
+sleep:0,
+currentWeight:0,
+goalWeight:0,
+calorieTarget:0,
+proteinTarget:0,
+foods:[],
+weekly:{}
+};
+function loadData(){
+try{
+const saved=localStorage.getItem(STORAGE_KEY);
+if(saved){
+const parsed=JSON.parse(saved);
+data={...data,...parsed};
 }
-
-
-/* =====================================================
-   UPDATE UI
-===================================================== */
-
-function updateUI(){
-
-  const score=
-    calculateScore();
-
-
-  document.getElementById(
-    "score"
-  ).textContent=
-    score;
-
-
-  document.getElementById(
-    "yourScore"
-  ).textContent=
-    score;
-
-
-  document.getElementById(
-    "weeklyScore"
-  ).textContent=
-    score;
-
-
-  document.getElementById(
-    "homeCalories"
-  ).textContent=
-    Math.round(
-      data.calories
-    );
-
-
-  document.getElementById(
-    "homeProtein"
-  ).textContent=
-    Math.round(
-      data.protein
-    );
-
-
-  document.getElementById(
-    "homeFiber"
-  ).textContent=
-    Math.round(
-      data.fiber
-    );
-
-
-  document.getElementById(
-    "homeFoodCount"
-  ).textContent=
-    data.foods.length;
-
-
-  document.getElementById(
-    "homeSteps"
-  ).textContent=
-    data.steps.toLocaleString();
-
-
-  document.getElementById(
-    "homeExercise"
-  ).textContent=
-    data.exercise;
-
-
-  document.getElementById(
-    "homeSleep"
-  ).textContent=
-    data.sleep;
-
-
-  document.getElementById(
-    "homeGoalWeight"
-  ).textContent=
-
-    data.goalWeight
-      ? data.goalWeight+" kg"
-      : "—";
-
-
-  document.getElementById(
-    "targetCalories"
-  ).textContent=
-    data.calorieTarget;
-
-
-  document.getElementById(
-    "targetProtein"
-  ).textContent=
-    data.proteinTarget;
-
-
-  document.getElementById(
-    "friendSteps"
-  ).textContent=
-    data.steps.toLocaleString();
-
-
-  /* CALORIE PROGRESS */
-
-  document.getElementById(
-    "calorieProgress"
-  ).style.width=
-
-    Math.min(
-      100,
-      (data.calories/
-       data.calorieTarget)*100
-    )+"%";
-
-
-  /* PROTEIN PROGRESS */
-
-  document.getElementById(
-    "proteinProgress"
-  ).style.width=
-
-    Math.min(
-      100,
-      (data.protein/
-       data.proteinTarget)*100
-    )+"%";
-
-
-  /* ACTIVITY FIELDS */
-
-  document.getElementById(
-    "stepsInput"
-  ).value=
-    data.steps || "";
-
-
-  document.getElementById(
-    "exerciseInput"
-  ).value=
-    data.exercise || "";
-
-
-  document.getElementById(
-    "sleepInput"
-  ).value=
-    data.sleep || "";
-
-
-  /* GOAL FIELDS */
-
-  document.getElementById(
-    "weightInput"
-  ).value=
-    data.weight || "";
-
-
-  document.getElementById(
-    "goalWeightInput"
-  ).value=
-    data.goalWeight || "";
-
-
-  document.getElementById(
-    "calorieTargetInput"
-  ).value=
-    data.calorieTarget;
-
-
-  document.getElementById(
-    "proteinTargetInput"
-  ).value=
-    data.proteinTarget;
-
-
-  renderFoodHistory();
-
-  renderAdvisor();
-
+}catch(error){
+console.error("FitSync data load error:",error);
 }
-
-
-/* =====================================================
-   START APP
-===================================================== */
-
+}
+function saveData(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+function showPage(pageId,button){
+document.querySelectorAll(".page").forEach(page=>{
+page.classList.remove("active");
+});
+const page=document.getElementById(pageId);
+if(page){
+page.classList.add("active");
+}
+document.querySelectorAll(".nav-item").forEach(item=>{
+item.classList.remove("active");
+});
+if(button){
+button.classList.add("active");
+}
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+}
+function addMessage(text,type){
+const chat=document.getElementById("foodChat");
+if(!chat)return;
+const message=document.createElement("div");
+message.className="msg "+type;
+message.innerHTML=text;
+chat.appendChild(message);
+chat.scrollTop=chat.scrollHeight;
+}
+async function analyzeFood(){
+const input=document.getElementById("foodInput");
+const text=input.value.trim();
+if(!text)return;
+addMessage(text,"me");
+input.value="";
+const loadingId="ai-loading-"+Date.now();
+addMessage(`<span id="${loadingId}">🤖 Analyzing your food with FitSync AI...</span>`,"bot");
+try{
+const response=await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+food:text
+})
+});
+const dataFromAI=await response.json();
+const loading=document.getElementById(loadingId);
+if(loading){
+const parent=loading.closest(".msg");
+if(parent)parent.remove();
+}
+if(!response.ok||!dataFromAI.success){
+throw new Error(dataFromAI.message||"AI request failed.");
+}
+const result=dataFromAI.result||{};
+const foodName=result.food||"Food";
+const quantity=result.quantity||"1 serving";
+const calories=Math.round(Number(result.calories)||0);
+const protein=+(Number(result.protein_g)||0).toFixed(1);
+const fiber=+(Number(result.fiber_g)||0).toFixed(1);
+const confidence=result.confidence||"medium";
+const note=result.note||"Nutrition values are estimates.";
+data.calories+=calories;
+data.protein+=protein;
+data.fiber+=fiber;
+if(!Array.isArray(data.foods)){
+data.foods=[];
+}
+data.foods.push({
+name:foodName,
+quantity:quantity,
+calories:calories,
+protein:protein,
+fiber:fiber
+});
+saveData();
+addMessage(`✅ <b>${foodName}</b><br><br>🍽️ Quantity: <b>${quantity}</b><br>🔥 Calories: <b>${calories} kcal</b><br>💪 Protein: <b>${protein} g</b><br>🌾 Fiber: <b>${fiber} g</b><br><br><span class="muted">Confidence: ${confidence}<br>${note}</span>`,"bot");
 updateUI();
-
+}catch(error){
+const loading=document.getElementById(loadingId);
+if(loading){
+const parent=loading.closest(".msg");
+if(parent)parent.remove();
+}
+addMessage(`❌ <b>AI couldn't analyze that right now.</b><br><br>${error.message||"Please try again."}<br><br>Make sure your Cloudflare Worker is deployed and the Gemini API key is active.`,"bot");
+}
+}
+document.getElementById("foodInput").addEventListener("keydown",function(event){
+if(event.key==="Enter"){
+event.preventDefault();
+analyzeFood();
+}
+});
+function saveActivity(){
+const stepsInput=document.getElementById("stepsInput");
+const exerciseInput=document.getElementById("exerciseInput");
+const sleepInput=document.getElementById("sleepInput");
+const steps=Number(stepsInput.value);
+const exercise=Number(exerciseInput.value);
+const sleep=Number(sleepInput.value);
+if(stepsInput.value!==""){
+data.steps=Math.max(0,steps||0);
+}
+if(exerciseInput.value!==""){
+data.exercise=Math.max(0,exercise||0);
+}
+if(sleepInput.value!==""){
+data.sleep=Math.max(0,sleep||0);
+}
+saveData();
+updateUI();
+addMessage("","bot");
+}
+function calculateTargets(){
+if(!data.currentWeight||!data.goalWeight){
+data.calorieTarget=0;
+data.proteinTarget=0;
+return;
+}
+const weight=Number(data.currentWeight);
+const goal=Number(data.goalWeight);
+let calories=weight*30;
+if(goal<weight){
+calories-=300;
+}
+if(goal>weight){
+calories+=250;
+}
+calories=Math.round(Math.max(1200,calories));
+const protein=Math.round(weight*1.6);
+data.calorieTarget=calories;
+data.proteinTarget=protein;
+}
+function saveGoal(){
+const currentInput=document.getElementById("currentWeightInput");
+const goalInput=document.getElementById("goalWeightInput");
+const current=Number(currentInput.value);
+const goal=Number(goalInput.value);
+if(!current||!goal||current<=0||goal<=0){
+alert("Please enter valid weights.");
+return;
+}
+data.currentWeight=current;
+data.goalWeight=goal;
+calculateTargets();
+saveData();
+updateUI();
+}
+function calculateScore(){
+let score=0;
+if(data.calorieTarget>0){
+const calorieRatio=data.calories/data.calorieTarget;
+if(calorieRatio>=0.8&&calorieRatio<=1.1){
+score+=25;
+}else if(calorieRatio>=0.6&&calorieRatio<=1.25){
+score+=18;
+}else if(calorieRatio>0){
+score+=10;
+}
+}
+if(data.proteinTarget>0){
+const proteinRatio=data.protein/data.proteinTarget;
+if(proteinRatio>=1){
+score+=25;
+}else if(proteinRatio>=0.75){
+score+=19;
+}else if(proteinRatio>=0.5){
+score+=12;
+}else if(proteinRatio>0){
+score+=6;
+}
+}
+if(data.steps>=8000){
+score+=20;
+}else if(data.steps>=6000){
+score+=16;
+}else if(data.steps>=4000){
+score+=11;
+}else if(data.steps>0){
+score+=6;
+}
+if(data.exercise>=45){
+score+=15;
+}else if(data.exercise>=30){
+score+=12;
+}else if(data.exercise>=15){
+score+=8;
+}else if(data.exercise>0){
+score+=4;
+}
+if(data.sleep>=7&&data.sleep<=9){
+score+=15;
+}else if(data.sleep>=6){
+score+=10;
+}else if(data.sleep>0){
+score+=5;
+}
+return Math.min(100,Math.round(score));
+}
+function renderSmartDailyAdvisor(){
+const advisor=document.getElementById("smartAdvisor");
+if(!advisor)return;
+const advice=[];
+if(!data.currentWeight||!data.goalWeight){
+advisor.textContent="Set your current weight and goal weight in Progress to unlock more personalized advice.";
+return;
+}
+if(data.calorieTarget>0){
+if(data.calories===0){
+advice.push(`Your daily calorie target is around ${data.calorieTarget} kcal. Start by logging your meals.`);
+}else if(data.calories<data.calorieTarget*0.6){
+advice.push(`You are still quite low on calories today. Aim for balanced meals instead of skipping food.`);
+}else if(data.calories>data.calorieTarget*1.15){
+advice.push(`You are above your estimated calorie target today. Keep the next meal lighter and balanced.`);
+}else{
+advice.push("Your calorie intake is currently within a reasonable range.");
+}
+}
+if(data.proteinTarget>0){
+if(data.protein<data.proteinTarget*0.5){
+advice.push(`Protein is low. Your target is about ${data.proteinTarget} g. Consider eggs, dal, paneer, curd, chicken or other protein-rich foods.`);
+}else if(data.protein<data.proteinTarget){
+advice.push(`You need roughly ${Math.round(data.proteinTarget-data.protein)} g more protein to reach today's target.`);
+}else{
+advice.push("Nice work on protein today.");
+}
+}
+if(data.steps<4000){
+advice.push("Your steps are low today. A short walk can help you move toward your activity goal.");
+}else if(data.steps<8000){
+advice.push("You're moving well. Try a little more walking if you have time.");
+}else{
+advice.push("Great step count today.");
+}
+if(data.exercise<15){
+advice.push("Try adding some exercise or a short workout if possible.");
+}else if(data.exercise>=30){
+advice.push("Good job getting your workout in.");
+}
+if(data.sleep>0&&data.sleep<7){
+advice.push("Try to get more sleep tonight; consistent sleep supports recovery.");
+}
+advisor.innerHTML=advice.slice(0,4).join("<br><br>");
+}
+function updateProgressBar(elementId,ratio){
+const element=document.getElementById(elementId);
+if(!element)return;
+const percentage=Math.max(0,Math.min(100,ratio*100));
+element.style.width=percentage+"%";
+}
+function updateFoodHistory(){
+const history=document.getElementById("foodHistory");
+const count=document.getElementById("foodCount");
+if(!history)return;
+if(!Array.isArray(data.foods))data.foods=[];
+if(count){
+count.textContent=data.foods.length+" item"+(data.foods.length===1?"":"s");
+}
+if(data.foods.length===0){
+history.innerHTML=`<div class="empty"><div class="empty-icon">🍽️</div>No food added yet.</div>`;
+return;
+}
+history.innerHTML=data.foods.slice().reverse().map(food=>`
+<div class="food-item">
+<div class="food-main">
+<div class="food-name">${escapeHTML(food.name)}</div>
+<div class="food-quantity">${escapeHTML(String(food.quantity))}</div>
+</div>
+<div class="food-nutrition">
+<div class="food-cal">${Math.round(Number(food.calories)||0)} kcal</div>
+<div class="food-protein">${Number(food.protein||0).toFixed(1)}g protein</div>
+</div>
+</div>
+`).join("");
+}
+function escapeHTML(value){
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+function updateUI(){
+calculateTargets();
+const score=calculateScore();
+const elements={
+dailyScore:score,
+homeCalories:Math.round(data.calories),
+homeProtein:Number(data.protein||0).toFixed(1)+"g",
+homeFiber:Number(data.fiber||0).toFixed(1)+"g",
+homeSteps:Math.round(data.steps||0),
+homeExercise:Math.round(data.exercise||0),
+homeSleep:Number(data.sleep||0).toFixed(1)+"h",
+foodCalories:Math.round(data.calories||0),
+foodProtein:Number(data.protein||0).toFixed(1)+"g",
+foodFiber:Number(data.fiber||0).toFixed(1)+"g",
+myFriendScore:score,
+myFriendSteps:Math.round(data.steps||0),
+currentWeightDisplay:(data.currentWeight||0)+" kg",
+goalWeightDisplay:(data.goalWeight||0)+" kg",
+calorieTargetDisplay:Math.round(data.calorieTarget||0),
+proteinTargetDisplay:Math.round(data.proteinTarget||0)+"g"
+};
+Object.keys(elements).forEach(id=>{
+const element=document.getElementById(id);
+if(element)element.textContent=elements[id];
+});
+let goalProgress=0;
+if(data.currentWeight&&data.goalWeight&&data.currentWeight!==data.goalWeight){
+const total=Math.abs(data.currentWeight-data.goalWeight);
+const remaining=Math.abs(data.currentWeight-data.goalWeight);
+if(total>0){
+goalProgress=Math.round(Math.max(0,Math.min(100,(total-remaining)/total*100)));
+}
+}
+const goalDisplay=document.getElementById("homeGoalProgress");
+if(goalDisplay)goalDisplay.textContent=goalProgress+"%";
+const calorieText=document.getElementById("calorieProgressText");
+if(calorieText)calorieText.textContent=`${Math.round(data.calories||0)} / ${Math.round(data.calorieTarget||0)} kcal`;
+const proteinText=document.getElementById("proteinProgressText");
+if(proteinText)proteinText.textContent=`${Number(data.protein||0).toFixed(1)} / ${Math.round(data.proteinTarget||0)} g`;
+const fiberText=document.getElementById("fiberProgressText");
+if(fiberText)fiberText.textContent=`${Number(data.fiber||0).toFixed(1)} / 25 g`;
+updateProgressBar("calorieProgress",data.calorieTarget?data.calories/data.calorieTarget:0);
+updateProgressBar("proteinProgress",data.proteinTarget?data.protein/data.proteinTarget:0);
+updateProgressBar("fiberProgress",data.fiber/25);
+const scoreMessage=document.getElementById("scoreMessage");
+if(scoreMessage){
+if(score>=85){
+scoreMessage.textContent="Excellent day! 🔥";
+}else if(score>=70){
+scoreMessage.textContent="Great work today! 💪";
+}else if(score>=50){
+scoreMessage.textContent="You're getting there. Keep going.";
+}else{
+scoreMessage.textContent="Let's make today count.";
+}
+}
+renderSmartDailyAdvisor();
+updateFoodHistory();
+}
+loadData();
+updateUI();
 </script>
-
+   <script>
+function renderWeeklyResult(){
+const box=document.getElementById("weeklyResult");
+if(!box)return;
+const today=new Date();
+const day=today.getDay();
+if(day===0){
+const score=calculateScore();
+box.innerHTML=`<div class="card"><h3>🏆 Sunday Result</h3><div class="big-number">${score}/100</div><p>This week's current result is based on your nutrition, steps, exercise and sleep.</p><button onclick="showPage('home')">Back to Home</button></div>`;
+}else{
+box.innerHTML=`<div class="card"><h3>📅 Weekly Result</h3><p>Your weekly result will be shown on Sunday.</p><p>Keep tracking your food, steps, exercise and sleep every day.</p></div>`;
+}
+}
+function renderFriend(){
+const box=document.getElementById("friendContent");
+if(!box)return;
+const friendScore=78;
+const friendSteps=8500;
+const myScore=calculateScore();
+const mySteps=Number(data.steps)||0;
+box.innerHTML=`<div class="card"><h3>👥 Your Friend</h3><div class="friend-row"><div><strong>You</strong><br><span>${mySteps.toLocaleString()} steps</span><br><b>${myScore}/100</b></div><div><strong>Friend</strong><br><span>${friendSteps.toLocaleString()} steps</span><br><b>${friendScore}/100</b></div></div></div><div class="card"><h3>🔥 Friendly Challenge</h3><p>Compare your progress and motivate each other.</p><p>Keep improving together!</p></div>`;
+}
+function updateProgress(){
+const current=Number(data.currentWeight)||0;
+const goal=Number(data.goalWeight)||0;
+const el=document.getElementById("weightProgress");
+if(!el)return;
+if(!current||!goal){
+el.innerHTML="<p>Set your current and goal weight to track progress.</p>";
+return;
+}
+const start=Number(data.startWeight)||current;
+let progress=0;
+if(start!==goal){
+progress=((start-current)/(start-goal))*100;
+}
+progress=Math.max(0,Math.min(100,progress));
+el.innerHTML=`<div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div><p>${progress.toFixed(0)}% progress toward your goal</p><p>Current: ${current} kg • Goal: ${goal} kg</p>`;
+}
+function saveStartWeight(){
+const current=Number(document.getElementById("currentWeight")?.value)||0;
+if(current&&!data.startWeight)data.startWeight=current;
+}
+function showToast(message){
+let toast=document.getElementById("fitsyncToast");
+if(!toast){
+toast=document.createElement("div");
+toast.id="fitsyncToast";
+toast.className="toast";
+document.body.appendChild(toast);
+}
+toast.textContent=message;
+toast.classList.add("show");
+setTimeout(()=>toast.classList.remove("show"),2200);
+}
+function clearFoodInput(){
+const input=document.getElementById("foodInput");
+if(input)input.value="";
+}
+function clearFoodHistory(){
+if(!confirm("Clear all food history?"))return;
+data.foods=[];
+data.calories=0;
+data.protein=0;
+data.fiber=0;
+saveData();
+updateUI();
+showToast("Food history cleared");
+}
+function resetFitSync(){
+if(!confirm("Reset all FitSync data?"))return;
+localStorage.removeItem(STORAGE_KEY);
+location.reload();
+}
+function registerPWA(){
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+}
+document.addEventListener("DOMContentLoaded",()=>{
+renderFriend();
+renderWeeklyResult();
+updateProgress();
+registerPWA();
+});
+</script>
 </body>
 </html>
-
-
-  
