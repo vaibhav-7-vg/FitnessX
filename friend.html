@@ -243,10 +243,15 @@ async function connectFriend(){
     return;
   }
 
+  toast("Searching friend...");
+
   try{
     const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
 
-    if(sessionError) throw sessionError;
+    if(sessionError){
+      toast("Session error: "+sessionError.message);
+      return;
+    }
 
     if(!sessionData.session){
       toast("Please login first");
@@ -262,13 +267,13 @@ async function connectFriend(){
       .maybeSingle();
 
     if(friendError){
-      console.error("Friend search error:",friendError);
-      toast("Could not search for friend");
+      console.error(friendError);
+      toast("Supabase error: "+friendError.message);
       return;
     }
 
     if(!friend){
-      toast("Friend code not found");
+      toast("Friend code not found: "+code);
       return;
     }
 
@@ -279,7 +284,7 @@ async function connectFriend(){
 
     data.connectedFriend={
       id:friend.id,
-      username:friend.username||"Friend",
+      username:friend.username || "Friend",
       friend_code:friend.friend_code
     };
 
@@ -293,8 +298,11 @@ async function connectFriend(){
     toast("Friend connected successfully ✓");
 
   }catch(error){
-    console.error("Connect friend error:",error);
-    toast("Could not connect friend");
+    console.error(error);
+    toast("Error: "+(error.message || "Unknown error"));
   }
-}</script></body></html>
+  }
+</script>
+</body>
+</html>
 
