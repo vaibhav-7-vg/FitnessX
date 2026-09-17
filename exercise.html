@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07100b"><meta name="description" content="FitSync — Track yourself. Improve together.">
+<title>FitSync — Exercise</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#07100b;color:#f4fff7;min-height:100vh;overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+input,textarea{outline:none}
+.app{width:100%;max-width:520px;min-height:100vh;margin:0 auto;background:radial-gradient(circle at top right,rgba(56,189,110,.08),transparent 35%),#07100b;position:relative;padding-bottom:90px}
+.topbar{position:sticky;top:0;z-index:50;padding:calc(16px + env(safe-area-inset-top)) 18px 14px;background:rgba(7,16,11,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#35e878,#159447);color:#031008;font-size:21px;font-weight:900;box-shadow:0 8px 25px rgba(53,232,120,.18)}
+.brand-text{display:flex;flex-direction:column}
+.brand-name{font-size:18px;font-weight:800;letter-spacing:-.4px}
+.brand-tagline{font-size:10px;color:#91a59a;margin-top:2px}
+main{padding:18px}
+.page{display:none;animation:pageIn .25s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.page-title{font-size:27px;font-weight:850;letter-spacing:-.8px;margin-bottom:5px}
+.page-subtitle{color:#82958a;font-size:13px;line-height:1.5;margin-bottom:20px}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.065);border-radius:20px;padding:17px;margin-bottom:14px;box-shadow:0 10px 30px rgba(0,0,0,.14)}
+.card-title{font-size:14px;font-weight:750;margin-bottom:12px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.hero{padding:20px;border-radius:24px;background:radial-gradient(circle at 90% 10%,rgba(53,232,120,.18),transparent 35%),linear-gradient(145deg,rgba(40,150,80,.16),rgba(255,255,255,.025));border:1px solid rgba(53,232,120,.14);margin-bottom:14px}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start}
+.hero-label{color:#92a59a;font-size:12px;margin-bottom:5px}
+.hero-title{font-size:21px;font-weight:800}
+.score{width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(53,232,120,.18),rgba(53,232,120,.04));border:2px solid rgba(53,232,120,.4);box-shadow:0 0 30px rgba(53,232,120,.10)}
+.score-number{font-size:25px;line-height:1;font-weight:900}
+.score-small{font-size:9px;color:#91a59a;margin-top:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-card{padding:15px;border-radius:17px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055)}
+.stat-icon{font-size:18px;margin-bottom:9px}
+.stat-value{font-size:21px;font-weight:850}
+.stat-label{color:#7f9187;font-size:11px;margin-top:3px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mini-card{padding:13px 10px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);text-align:center}
+.mini-value{font-size:17px;font-weight:800}
+.mini-label{font-size:9px;color:#7f9187;margin-top:4px}
+.progress-row{margin-bottom:15px}
+.progress-row:last-child{margin-bottom:0}
+.progress-top{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:7px}
+.progress-name{color:#aebdb4}
+.progress-number{color:#f1fff5;font-weight:700}
+.progress-track{width:100%;height:8px;border-radius:20px;background:rgba(255,255,255,.07);overflow:hidden}
+.progress-fill{height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,#24c968,#69f39a);transition:width .5s ease}
+.btn{width:100%;border:none;border-radius:14px;padding:13px 16px;font-weight:750;transition:transform .15s ease,opacity .15s ease}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#35e878,#20b95c);color:#031008;box-shadow:0 8px 22px rgba(53,232,120,.14)}
+.btn-secondary{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);color:#ecfff2}
+.btn-danger{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.18);color:#ff9b9b}
+.btn-small{width:auto;padding:8px 11px;font-size:11px;border-radius:10px}
+.input-group{margin-bottom:13px}
+.input-label{display:block;font-size:11px;color:#91a198;margin-bottom:7px}
+.input{width:100%;border:none;outline:none;padding:13px 14px;border-radius:13px;background:#0d1811;border:1px solid rgba(255,255,255,.07);color:#f4fff7;font-size:14px}
+.input::placeholder{color:#52635a}
+.input:focus{border-color:rgba(53,232,120,.42);box-shadow:0 0 0 3px rgba(53,232,120,.07)}
+.chat-box{min-height:230px;max-height:430px;overflow-y:auto;padding:5px 1px;margin-bottom:12px;scroll-behavior:smooth}
+.msg{max-width:86%;padding:11px 13px;margin-bottom:9px;border-radius:16px;font-size:13px;line-height:1.5;word-wrap:break-word}
+.msg.me{margin-left:auto;background:linear-gradient(135deg,#1eaf59,#158e45);color:#f5fff8;border-bottom-right-radius:5px}
+.msg.bot{margin-right:auto;background:#101d15;border:1px solid rgba(255,255,255,.06);color:#dce9df;border-bottom-left-radius:5px}
+.chat-row{display:flex;gap:8px}
+.chat-row .input{flex:1}
+.chat-send{width:48px;min-width:48px;border:none;border-radius:13px;background:#35e878;color:#031008;font-size:19px;font-weight:900}
+.food-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+.food-item:last-child{border-bottom:none}
+.food-main{min-width:0}
+.food-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.food-quantity{color:#718178;font-size:10px;margin-top:3px}
+.food-nutrition{text-align:right;flex-shrink:0}
+.food-cal{font-size:12px;font-weight:750}
+.food-protein{font-size:10px;color:#7e9185}
+.advisor{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(53,232,120,.075),rgba(255,255,255,.018));border:1px solid rgba(53,232,120,.11)}
+.advisor::before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-55px;top:-55px;background:rgba(53,232,120,.07)}
+.advisor-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(53,232,120,.10);font-size:19px;margin-bottom:10px}
+.advisor-title{font-size:15px;font-weight:800;margin-bottom:6px}
+.advisor-text{color:#9aac9f;font-size:12px;line-height:1.6}
+.activity-box{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);border-radius:16px;margin-bottom:10px}
+.activity-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:rgba(53,232,120,.08);font-size:19px}
+.activity-info{flex:1}
+.activity-name{font-size:13px;font-weight:700}
+.activity-description{font-size:10px;color:#74867c;margin-top:3px}
+.friend-header{display:flex;align-items:center;gap:12px}
+.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#35e878,#14783c);color:#031008;font-size:18px;font-weight:900}
+.friend-name{font-size:15px;font-weight:800}
+.friend-status{font-size:10px;color:#6e8477;margin-top:3px}
+.compare-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:18px}
+.compare-user{text-align:center}
+.compare-value{font-size:23px;font-weight:900}
+.compare-label{font-size:10px;color:#718278;margin-top:4px}
+.compare-vs{font-size:10px;color:#607168}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+.setting-row:last-child{border-bottom:none}
+.setting-info{flex:1}
+.setting-name{font-size:13px;font-weight:700}
+.setting-description{font-size:10px;color:#728278;margin-top:4px}
+.goal-box{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.goal-stat{padding:15px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055)}
+.goal-label{font-size:10px;color:#73847a;margin-bottom:5px}
+.goal-value{font-size:20px;font-weight:850}
+.empty{text-align:center;padding:30px 15px;color:#617168;font-size:12px;line-height:1.6}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:#132219;border:1px solid rgba(53,232,120,.25);color:#effff4;padding:11px 15px;border-radius:12px;font-size:12px;z-index:200;opacity:0;pointer-events:none;transition:.25s ease;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(7,16,11,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(5,1fr);z-index:100}
+.nav-btn{border:none;background:none;color:#64766c;padding:7px 2px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;font-weight:650}
+.nav-btn .nav-icon{font-size:18px;line-height:1}
+.nav-btn.active{color:#45eb84;background:rgba(53,232,120,.07)}
+.auth-screen{position:fixed;inset:0;background:#07100b;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.auth-screen.hidden{display:none}
+.auth-card{width:100%;max-width:400px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.auth-logo{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#35e878,#159447);color:#031008;font-size:28px;font-weight:900;margin:0 auto 15px}
+.auth-title{text-align:center;font-size:25px;font-weight:850}
+.auth-subtitle{text-align:center;color:#81958a;font-size:12px;line-height:1.5;margin:7px 0 22px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,.035);padding:4px;border-radius:13px;margin-bottom:18px}
+.auth-tab{border:none;background:transparent;color:#73857b;padding:10px;border-radius:10px;font-size:12px;font-weight:750}
+.auth-tab.active{background:#35e878;color:#031008}
+.auth-message{min-height:18px;text-align:center;font-size:11px;color:#8fa297;margin-top:10px;line-height:1.4}
+.hidden-field{display:none!important}
+.small-note{text-align:center;color:#56685e;font-size:9px;margin-top:15px;line-height:1.5}
+@media(max-width:360px){main{padding:14px}.page-title{font-size:24px}.hero{padding:16px}.stat-value{font-size:18px}}
+</style></head><body>
+
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">F</div><div class="auth-title">FitSync</div>
+    <div class="auth-subtitle">Track yourself. Improve together.</div>
+    <div class="auth-tabs">
+      <button id="loginTab" class="auth-tab active" onclick="showAuthMode('login')">Sign In</button>
+      <button id="signupTab" class="auth-tab" onclick="showAuthMode('signup')">Create Account</button>
+    </div>
+    <div id="signupFields" class="hidden-field"><div class="input-group"><label class="input-label">Username</label><input id="signupUsername" class="input" type="text" placeholder="Your name"></div></div>
+    <div class="input-group"><label class="input-label">Email</label><input id="authEmail" class="input" type="email" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="input-group"><label class="input-label">Password</label><input id="authPassword" class="input" type="password" placeholder="Minimum 6 characters" autocomplete="current-password"></div>
+    <button id="authMainBtn" class="btn btn-primary" onclick="handleAuth()">Sign In</button>
+    <button id="authToggleBtn" class="btn btn-secondary" style="margin-top:10px" onclick="toggleAuthMode()">Don't have an account? Create Account</button>
+    <div id="authMessage" class="auth-message"></div>
+  </div>
+</div>
+
+<div id="app" class="app">
+<header class="topbar"><div class="brand"><div class="brand-icon">F</div><div class="brand-text"><div class="brand-name">FitSync</div><div class="brand-tagline">Track yourself. Improve together.</div></div></div>
+<div style="display:flex;gap:8px"><button class="btn btn-secondary btn-small" onclick="logout()">Logout</button></div></header>
+<main>
+<section class="page active"><h1 class="page-title">Exercise</h1><p class="page-subtitle">Record your daily movement and recovery.</p>
+<div class="card"><div class="card-title">Today's activity</div>
+<div class="activity-box"><div class="activity-icon">👣</div><div class="activity-info"><div class="activity-name">Steps</div><div class="activity-description">Enter your current step count.</div></div><input id="stepsInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right"></div>
+<div class="activity-box"><div class="activity-icon">🏃</div><div class="activity-info"><div class="activity-name">Exercise</div><div class="activity-description">Minutes of exercise today.</div></div><input id="exerciseInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right"></div>
+<div class="activity-box"><div class="activity-icon">😴</div><div class="activity-info"><div class="activity-name">Sleep</div><div class="activity-description">Hours slept last night.</div></div><input id="sleepInput" class="input" type="number" placeholder="0" style="width:100px;text-align:right"></div>
+<button class="btn btn-primary" onclick="saveActivity()">Save Activity</button></div>
+<div class="card"><div class="card-title">Today's summary</div><div class="mini-grid"><div class="mini-card"><div class="mini-value" id="sumSteps">0</div><div class="mini-label">Steps</div></div><div class="mini-card"><div class="mini-value" id="sumExercise">0m</div><div class="mini-label">Exercise</div></div><div class="mini-card"><div class="mini-value" id="sumSleep">0h</div><div class="mini-label">Sleep</div></div></div></div></section></main><nav class="bottom-nav"><a class="nav-btn nav-item" href="home.html" style="text-decoration:none"><span class="nav-icon">🏠</span><span>Home</span></a><a class="nav-btn nav-item" href="food.html" style="text-decoration:none"><span class="nav-icon">🍽️</span><span>Food</span></a><a class="nav-btn nav-item active" href="exercise.html" style="text-decoration:none"><span class="nav-icon">🏃</span><span>Exercise</span></a><a class="nav-btn nav-item" href="friend.html" style="text-decoration:none"><span class="nav-icon">👥</span><span>Friend</span></a><a class="nav-btn nav-item" href="progress.html" style="text-decoration:none"><span class="nav-icon">📈</span><span>Progress</span></a></nav><div id="toast" class="toast"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://bdduwgyyxtqvlzzfpwzs.supabase.co";
+const SUPABASE_KEY="sb_publishable_wtbNjoyb0xW9isu3oNRcaA_xF75j9fn";
+const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const API_URL="https://fitsync-ai.gawalivaibhav883.workers.dev";
+const STORAGE_KEY="fitsync_data_v1";
+let authMode="login";
+let data={foods:[],calories:0,protein:0,fiber:0,steps:0,exercise:0,sleep:0,currentWeight:null,goalWeight:null,startWeight:null,calorieTarget:null,proteinTarget:null,friendCode:null,connectedFriend:null};
+
+function loadData(){const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{data={...data,...JSON.parse(stored)};}catch(e){console.error("FitSync data load error:",e);}}}
+function saveData(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
+function go(page){window.location.href=page;}
+function escapeHTML(str){if(!str)return"";return String(str).split("").map(char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]||char)).join("");}
+function toast(msg){const toastEl=document.getElementById("toast");if(!toastEl)return;toastEl.textContent=msg;toastEl.classList.add("show");setTimeout(()=>{toastEl.classList.remove("show");},2200);}
+
+function showAuthMode(mode){authMode=mode;const loginTab=document.getElementById("loginTab");const signupTab=document.getElementById("signupTab");const signupFields=document.getElementById("signupFields");if(mode==="signup"){loginTab.classList.remove("active");signupTab.classList.add("active");signupFields.style.display="block";}else{loginTab.classList.add("active");signupTab.classList.remove("active");signupFields.style.display="none";}showAuthMessage("");}
+function toggleAuthMode(){showAuthMode(authMode==="login"?"signup":"login");}
+function showAuthMessage(message,error=false){const box=document.getElementById("authMessage");if(!box)return;box.textContent=message;box.style.color=error?"#ff6b6b":"#7CFF9B";}
+
+async function ensureProfile(user,username){
+  const {data:existing,error:selectError}=await supabaseClient.from("profiles").select("id,username,friend_code").eq("id",user.id).maybeSingle();
+  if(selectError)throw selectError;
+  if(existing)return existing;
+  const friendCode="FS"+crypto.randomUUID().replace(/-/g,"").substring(0,8).toUpperCase();
+  const {data:profile,error}=await supabaseClient.from("profiles").insert({id:user.id,username:username,friend_code:friendCode}).select().single();
+  if(error)throw error;
+  return profile;
+}
+async function handleAuth(){
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const username=document.getElementById("signupUsername")?.value.trim()||"";
+  if(!email||!password){showAuthMessage("Please enter email and password.");return;}
+  if(authMode==="signup"&&!username){showAuthMessage("Please enter a username.");return;}
+  if(password.length<6){showAuthMessage("Password must be at least 6 characters.");return;}
+  const mainBtn=document.getElementById("authMainBtn");mainBtn.disabled=true;showAuthMessage("Please wait...");
+  try{
+    if(authMode==="signup"){
+      const {data:authData,error}=await supabaseClient.auth.signUp({email,password});
+      if(error)throw error;
+      if(!authData.user)throw new Error("Account could not be created.");
+      if(authData.session){await ensureProfile(authData.user,username);showAuthMessage("Account created successfully!");await checkAuth();}
+      else{showAuthMessage("Account created. Please sign in to continue.");}
+    }else{
+      const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      if(!authData.user)throw new Error("Sign in failed.");
+      await ensureProfile(authData.user,username||"User");
+      showAuthMessage("Signed in successfully!");await checkAuth();
+    }
+  }catch(error){console.error("FitSync authentication error:",error);showAuthMessage(error.message||"Authentication failed.",true);}
+  finally{mainBtn.disabled=false;}
+}
+async function logout(){
+  if(confirm("Logout from FitSync?")){
+    localStorage.removeItem(STORAGE_KEY);
+    supabaseClient.auth.signOut().then(()=>window.location.reload()).catch(()=>window.location.reload());
+  }
+}
+async function checkAuth(){
+  try{
+    const {data:sessionData,error}=await supabaseClient.auth.getSession();
+    if(error)throw error;
+    const authScreen=document.getElementById("authScreen");
+    if(sessionData.session){
+      authScreen.style.display="none";
+      loadData();
+      renderPage();
+      const {data:profile}=await supabaseClient.from("profiles").select("username,friend_code").eq("id",sessionData.session.user.id).maybeSingle();
+      if(profile){data.friendCode=profile.friend_code;saveData();}
+    }else{authScreen.style.display="flex";}
+  }catch(error){
+    console.error("FitSync session error:",error);
+    document.getElementById("authScreen").style.display="flex";
+    showAuthMessage(error.message||"Could not check login status.",true);
+  }
+}
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  const authScreen=document.getElementById("authScreen");
+  if(session){authScreen.style.display="none";loadData();renderPage();}
+  else{authScreen.style.display="flex";}
+});
+
+function saveActivity(){
+  const steps=document.getElementById("stepsInput"),exercise=document.getElementById("exerciseInput"),sleep=document.getElementById("sleepInput");
+  data.steps=Math.max(0,Number(steps?.value)||0);data.exercise=Math.max(0,Number(exercise?.value)||0);data.sleep=Math.max(0,Number(sleep?.value)||0);
+  saveData();renderPage();toast("Activity saved ✓");
+}
+function renderPage(){loadData();document.getElementById("stepsInput").value=data.steps||"";document.getElementById("exerciseInput").value=data.exercise||"";document.getElementById("sleepInput").value=data.sleep||"";document.getElementById("sumSteps").textContent=Number(data.steps)||0;document.getElementById("sumExercise").textContent=(Number(data.exercise)||0)+"m";document.getElementById("sumSleep").textContent=(Number(data.sleep)||0)+"h";}
+checkAuth();</script></body></html>
+
+
