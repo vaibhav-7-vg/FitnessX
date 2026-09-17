@@ -234,7 +234,67 @@ supabaseClient.auth.onAuthStateChange((event,session)=>{
   else{authScreen.style.display="flex";}
 });
 
-async function connectFriend(){const code=document.getElementById("friendCodeInput")?.value.trim();if(!code){toast("Enter a friend code");return;}toast("Friend connection requires the friend system backend to be connected.");}
-function renderPage(){loadData();const nameEl=document.getElementById("friendName"),statusEl=document.getElementById("friendStatus"),avatarEl=document.getElementById("friendAvatar");const cmpYou=document.getElementById("cmpStepsYou"),cmpFriend=document.getElementById("cmpStepsFriend");if(data.connectedFriend){if(nameEl)nameEl.textContent=data.connectedFriend.username||"Friend";if(statusEl)statusEl.textContent="Connected";if(avatarEl)avatarEl.textContent=(data.connectedFriend.username||"F")[0].toUpperCase();}else{if(nameEl)nameEl.textContent="Not connected";if(statusEl)statusEl.textContent="Add a friend to compare progress.";if(avatarEl)avatarEl.textContent="?";}if(cmpYou)cmpYou.textContent=Number(data.steps)||0;if(cmpFriend)cmpFriend.textContent=0;}
-checkAuth();</script></body></html>
+async function connectFriend(){
+  const input=document.getElementById("friendCodeInput");
+  const code=input?.value.trim().toUpperCase();
+
+  if(!code){
+    toast("Enter a friend code");
+    return;
+  }
+
+  try{
+    const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+
+    if(sessionError) throw sessionError;
+
+    if(!sessionData.session){
+      toast("Please login first");
+      return;
+    }
+
+    const currentUserId=sessionData.session.user.id;
+
+    const {data:friend,error:friendError}=await supabaseClient
+      .from("profiles")
+      .select("id,username,friend_code")
+      .eq("friend_code",code)
+      .maybeSingle();
+
+    if(friendError){
+      console.error("Friend search error:",friendError);
+      toast("Could not search for friend");
+      return;
+    }
+
+    if(!friend){
+      toast("Friend code not found");
+      return;
+    }
+
+    if(friend.id===currentUserId){
+      toast("You cannot connect to yourself");
+      return;
+    }
+
+    data.connectedFriend={
+      id:friend.id,
+      username:friend.username||"Friend",
+      friend_code:friend.friend_code
+    };
+
+    saveData();
+    renderPage();
+
+    if(input){
+      input.value="";
+    }
+
+    toast("Friend connected successfully ✓");
+
+  }catch(error){
+    console.error("Connect friend error:",error);
+    toast("Could not connect friend");
+  }
+}</script></body></html>
 
